@@ -1,3 +1,7 @@
+# To make bundler work
+require "rubygems"
+require "bundler/Setup"
+
 class Game
 
 end
