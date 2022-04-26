@@ -3,5 +3,5 @@ class Game
 end
 
 def game_loop
-    puts "LOOPANJEEEE"
+    puts "Real Game Loop"
 end
