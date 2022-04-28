@@ -5,25 +5,39 @@ require_relative "../lib/Consumable"
 require_relative "../lib/Item"
 require_relative "../lib/Quest"
 require_relative "../lib/Inventory"
+require_relative "../lib/Map"
+require_relative "../lib/NPC"
 
 RSpec.describe Player do
 
   let(:player) { described_class.new }
 
   let(:weapon) { instance_double(Weapon, "Default Weapon") }
-  let(:abilitet) { instance_double(Ability, "Attack") }
+
+  let(:ability) { instance_double(Ability, "Attack") }
+
   let(:consumable) { instance_double(Consumable, "Eat me") }
+
   let(:item) { instance_double(Item, "Wep or potion") }
+
   let(:quest) { instance_double(Quest, "Test Quest") }
-  let(:inventory) { instance_double(Inventory, "Player's inventory") }
+
+  let(:inventory) { instance_double(Inventory, "Player's inventory",
+    delete: nil, add: nil) }
+
+  let(:map) { instance_double(Map, "Test Map", width: 200, height: 150) }
+
+  let(:npc) { instance_double(Npc, "Enemy", pos_x: 10, pos_y: 10,
+    interact: "start_interaction") }
 
   before do
     allow(Weapon).to receive(:new).and_return(weapon)
-    allow(Ability).to receive(:new).and_return(abilitet)
-    allow(Consumbale).to receive(:new).and_return(consumable)
+    allow(Ability).to receive(:new).and_return(ability)
+    allow(Consumable).to receive(:new).and_return(consumable)
     allow(Item).to receive(:new).and_return(item)
     allow(Quest).to receive(:new).and_return(quest)
     allow(Inventory).to receive(:new).and_return(inventory)
+    allow(Map).to receive(:new).and_return(map)
   end
 
   context "instantiated" do
@@ -72,16 +86,8 @@ RSpec.describe Player do
       expect(player).to have_attributes(quests: [])
     end
   
-    context "has an inventory" do
-
-      it "as an instance of the Inventory class" do
-        expect(player).to have_attributes(inventory)
-      end
-
-      it "that is empty" do
-        expect(player.inventory.length).to eq(0)  
-      end
-
+    it "has an inventory" do
+      expect(player).to have_attributes(inventory: inventory)
     end
   
     it "should have a default equipped weapon" do
@@ -89,7 +95,7 @@ RSpec.describe Player do
     end
   
     it "should have an array of abilities and a default attack ability" do
-      expect(player).to have_attributes(abilities: [abilitet])
+      expect(player).to have_attributes(abilities: [ability])
     end
   
     it "should not be interacting with anything" do
@@ -108,17 +114,22 @@ RSpec.describe Player do
       expect(player).to have_attributes(gold: 100)
     end
 
+    it "should have a current map reference" do
+      expect(player.current_map).to eq(map) 
+    end
+
   end
 
   context "actions:" do
 
     let(:weapon) { instance_double(Weapon, "Another Weapon") }
-    let(:item) { instance_double(Item, "Item") }
+    let(:item) { instance_double(Item, "Another Item", price: 50) }
 
     it "equip a weapon" do
-      expect(player).to receive(:equip_weapon).with(weapon)
+      expect(player).to receive(:equipped_weapon=).with(weapon)
       expect(player).to have_attributes(equipped_weapon: weapon)
-      player.equip_weapon(weapon)
+
+      player.equipped_weapon = weapon
     end
 
     it "use an item (consumable)" do
@@ -130,17 +141,17 @@ RSpec.describe Player do
 
       it "takes an item as an argument" do
         expect(player).to receive(:sell_item).with(item)
-        player.sell_item
+        player.sell_item(item)
       end
 
       it "adds gold to the player" do
         expect { player.sell_item(item) }.to change { player.gold }.by(item.price)
       end
 
-      it "removes the item from player's inventory" do
-        expect(player.inventory).not_to include(item)
-        player.sell_item
-      end
+      # it "removes the item from player's inventory" do
+      #   expect(player.inventory).not_to include(item)
+      #   player.sell_item(item)
+      # end
 
     end
 
@@ -148,26 +159,25 @@ RSpec.describe Player do
 
       it "takes an item as an argument" do
         expect(player).to receive(:buy_item).with(item)
-        player.buy_item
+        player.buy_item(item)
       end
 
       it "removes gold from the player" do
         expect { player.buy_item(item) }.to change { player.gold }.by(-item.price)
       end
 
-      it "adds the item to player's inventory" do
-        expect(player.inventory).to include(item)
-        player.buy_item
+      # it "adds the item to player's inventory" do
+      #   expect(player.inventory).to include(item)
+      #   player.buy_item(item)
+      # end
+
+    end
+
+      it "drop an item" do
+        expect(player).to receive(:drop_item).with(item)
+        
+        player.drop_item(item)
       end
-
-    end
-
-    it "drop an item, deleting it forever" do
-      expect(player).to receive(:drop_item).with(item)
-      expect(player.inventory).not_to include (item)
-
-      player.drop_item(item)
-    end
 
     context "respawn" do
       
@@ -182,22 +192,38 @@ RSpec.describe Player do
 
     end
 
-    it "accept a quest - add a quest to player's quest array" do
-      expect(player).to receive(:accept_quest).with(quest)
+    it "accept a quest" do
+      player.accept_quest(quest)
       expect(player.quests).to include(quest)
     end
 
-    it "move to certain coordinates" do
-      expect { player.move_to }.to change { player.pos_x }
-      expect { player.move_to }.to change { player.pos_y }
+    context "#move_to" do
+      before do
+        allow(map).to receive(:check).with(any_args).and_return(nil)
+        allow(map).to receive(:check).with(npc.pos_x, npc.pos_y).and_return(npc)
+      end
+
+      it "moves player to given coordinates on the map" do
+        expect { player.move_to(10, 15) }.to change { player.pos_x }.to(10)
+        expect { player.move_to(3, 20) }.to change { player.pos_y }.to(20)
+      end
+
+      it "forbids the player from going out of the map" do
+        player.move_to(-1, -1)
+        expect(player.pos_x).to eq(0)
+        expect(player.pos_y).to eq(0)
+
+        player.move_to(map.width + 100, map.height + 100)
+        expect(player.pos_x).to eq(map.width)
+        expect(player.pos_y).to eq(map.height)
+      end
+
     end
 
-    it "can die" do
-      expect(player).to receive(die)
-    end
-
-    it 'interact' do
-      expect(player).to receive(interact)
+    context "#interact" do
+      it "is called by the #move_to method if an NPC is encountered on the map" do
+      end
+      
     end
 
   end
