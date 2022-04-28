@@ -1,3 +1,3 @@
-class Consumable
+class Consumable < Item
     
 end

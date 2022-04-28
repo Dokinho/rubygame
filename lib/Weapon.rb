@@ -1,3 +1,3 @@
-class Weapon
+class Weapon < Item
 
 end
