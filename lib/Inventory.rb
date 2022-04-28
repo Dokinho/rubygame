@@ -1,10 +1,13 @@
 class Inventory
   include Enumerable
 
-  attr_reader :items
+  attr_reader :id, :max_slots
+  attr_accessor :items
 
-  def initialize
+  def initialize(max_slots)
+    @id = self.object_id
     @items = []
+    @max_slots = max_slots
   end
 
   def each
@@ -13,13 +16,16 @@ class Inventory
     end
   end
 
-  def include(item)
-  end
-
   def add(item)
+    @items << item
   end
 
-  def delete(item)
+  def remove(item)
+    @items.delete(item)
+  end
+
+  def upgrade_slots(num)
+    @max_slots += num
   end
 
 end

@@ -28,7 +28,7 @@ class Player
 
   def sell_item(item)
     @gold = @gold + item.price
-    @inventory.delete(item)
+    @inventory.remove(item)
   end
 
   def buy_item(item)
@@ -39,7 +39,7 @@ class Player
   end
 
   def drop_item(item)
-    @inventory.delete(item)
+    @inventory.remove(item)
   end
 
   def accept_quest(quest)
