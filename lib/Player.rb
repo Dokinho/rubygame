@@ -1,3 +1,5 @@
+require_relative "Inventory"
+
 class Player
   attr_reader :id, :level, :image
   attr_accessor :name, :xp, :health, :damage, :armor, :pos_x, :pos_y, :quests, :dead, :inventory,

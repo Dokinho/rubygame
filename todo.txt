@@ -1,3 +1,10 @@
 -Remove object's pos_x and pos_y and let map take care of it?
--Add a map method for checking if an action that takes coordinates is inside 
-    the map
+
+-Add a map method for checking if a method that takes coordinates is inside 
+    the map and call it inside every method that needs it
+
+-Make a superclass for all the objects on the map (removes redundancy)
+
+-Remove id attribute from every class and just use object_id
+
+-Add the option to choose image for the player and the enemy
