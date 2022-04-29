@@ -1,0 +1,3 @@
+-Remove object's pos_x and pos_y and let map take care of it?
+-Add a map method for checking if an action that takes coordinates is inside 
+    the map
