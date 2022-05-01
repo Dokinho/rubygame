@@ -8,3 +8,5 @@
 -Remove id attribute from every class and just use object_id
 
 -Add the option to choose image for the player and the enemy
+
+-Add quest requirements tracker
