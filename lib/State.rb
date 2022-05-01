@@ -13,30 +13,27 @@ module State
   @prompt = TTY::Prompt.new
   @reader = TTY::Reader.new
 
-  # The main loop is located here
   def self.menu
-    loop do
-      system "cls"
-      selection = %w(Map Character Inventory Quests Quit)
-      choice = @prompt.select("-----MAIN MENU-----", selection)
+    system "cls"
+    selection = %w(Map Character Inventory Quests Quit)
+    choice = @prompt.select("-----MAIN MENU-----", selection)
 
-      case choice
-      when "Map"
-        self.map
-      when "Character"
-        self.character
-      when "Inventory"
-        self.inventory
-      when "Quests"
-        self.quests
-      when "Quit"
-        system "cls"
-        puts "Thanks for playing!"
-        sleep 1
-        exit
-      else
-        puts "Stop cheating!"
-      end
+    case choice
+    when "Map"
+      self.map
+    when "Character"
+      self.character
+    when "Inventory"
+      self.inventory
+    when "Quests"
+      self.quests
+    when "Quit"
+      system "cls"
+      puts "Thanks for playing!"
+      sleep 1
+      exit
+    else
+      puts "Stop cheating!"
     end
   end
 

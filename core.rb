@@ -10,7 +10,9 @@ class Game
 end
 
 def game_loop
+  loop do
     State.menu
+  end
 end
 
 game_loop

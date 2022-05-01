@@ -20,3 +20,5 @@
 -Cleanup imports after testing! (State.rb etc.)
 
 -Add an alignment system to terminal output
+
+-Move with arrow keys
