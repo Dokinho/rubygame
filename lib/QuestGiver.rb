@@ -9,4 +9,8 @@ class QuestGiver < Npc
     @quests = []
   end
 
+  def display_quests
+    @quests.each { |quest| puts quest }
+  end
+
 end
