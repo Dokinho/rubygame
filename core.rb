@@ -2,10 +2,14 @@
 require "rubygems"
 require "bundler/Setup"
 
+Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
+
 class Game
 
 end
 
 def game_loop
-    puts "Real Game Loop"
+    State.menu
 end
+
+game_loop

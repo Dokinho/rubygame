@@ -7,6 +7,7 @@ class Shop < Npc
   def initialize(slots)
     super()
     @inventory = Inventory.new(slots)
+    @map_marker = "$"
   end
 
   def set_items(*items)

@@ -1,4 +1,5 @@
 require_relative "Inventory"
+require_relative "Ability"
 
 class Player
   attr_reader :id, :level, :image
@@ -18,8 +19,8 @@ class Player
     @pos_y = 0
     @dead = false
     @quests = []
-    @inventory = Inventory.new
-    @equipped_weapon = Weapon.new
+    @inventory = Inventory.new(10)
+    @equipped_weapon = nil #Weapon.new
     @abilities = [Ability.new]
     @interacting_with = nil
     @map_marker = "#"
@@ -58,7 +59,7 @@ class Player
     @pos_x, @pos_y = x, y
 
     # Check for interactions
-    map_obj = @current_map.check(@pos_x, @pos_y)
+    map_obj = @current_map.check_collision(@pos_x, @pos_y)
     interact(map_obj) if map_obj.class == "Npc"
   end
 

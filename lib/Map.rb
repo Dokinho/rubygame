@@ -9,13 +9,13 @@ class Map
     @name = name
     @width = width
     @height = height
-    @objects = Array.new(width) { Array.new(height, "tile") }
-    @out = Array.new(width, Array.new(height, 0))
+    @objects = Array.new(height) { Array.new(width, "tile") }
   end
 
   def render
-    @out.each do |row|
-      puts row
+    @objects.each do |row|
+      puts
+      row.each { |tile| tile == "tile" ? print("□ ") : print("#{tile.map_marker} ") }
     end
   end
 
@@ -30,7 +30,12 @@ class Map
     @objects[obj.pos_x][obj.pos_y] = "tile"
   end
 
-  def check_collision
+  def move_object(obj, x, y)
+    remove_object(obj)
+    add_object(obj, x, y)
+  end
+
+  def check_collision(x, y)
 
   end
 end

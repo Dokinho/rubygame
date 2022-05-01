@@ -10,3 +10,11 @@
 -Add the option to choose image for the player and the enemy
 
 -Add quest requirements tracker
+
+-Add a main menu with New Game (with character creation), Load Game, About, and Quit
+
+-Refactor all specs
+
+-Out of bounds throws an error and stops the game
+
+-Cleanup imports after testing! (State.rb etc.)
