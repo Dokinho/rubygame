@@ -1,6 +1,6 @@
 -Remove object's pos_x and pos_y and let map take care of it?
 
--Add a map method for checking if a method that takes coordinates is inside 
+-Add a map method for checking if given coordinates are inside 
     the map and call it inside every method that needs it
 
 -Make a superclass for all the objects on the map (removes redundancy)
@@ -18,3 +18,5 @@
 -Out of bounds throws an error and stops the game
 
 -Cleanup imports after testing! (State.rb etc.)
+
+-Add an alignment system to terminal output

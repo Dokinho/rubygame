@@ -1,13 +1,14 @@
 require "tty-prompt"
 require "tty-reader"
 
-require_relative "Map"
-require_relative "Player"
-
 module State
+  # -----TEST-----
   @igrac = Player.new
+  @zloco = Enemy.new(10, 1, 100)
   @mapa = Map.new("Mapa", 20, 20)
+
   @mapa.add_object(@igrac, 0, 1)
+  @mapa.add_object(@zloco, 5, 5)
 
   @prompt = TTY::Prompt.new
   @reader = TTY::Reader.new
@@ -43,7 +44,7 @@ module State
     system "cls"
     puts "-----Map legend-----"
     puts "# -> Player"
-    puts "& -> Enemy"
+    puts "@ -> Enemy"
     puts "$ -> Shop"
     @mapa.render
     choice = @prompt.select("Choose an action:", %w(Walk Back) )
@@ -73,17 +74,28 @@ module State
 
   def self.character
     system "cls"
-    puts "LIK"
+    puts "-----Player-----"
+    puts "|Name||Level||Health||Damage||Armor||Weapon|"
+    puts "#{@igrac.name}   #{@igrac.level}   #{@igrac.health}/#{@igrac.max_health}    #{@igrac.damage}       #{@igrac.armor}    #{@igrac.equipped_weapon}"
+    puts
+    puts "Press any key to go back"
+    @reader.read_keypress
   end
 
   def self.inventory
     system "cls"
-    puts "INVENTAR"
+    @igrac.inventory.each { |item| puts item }
+    puts
+    puts "Press any key to go back"
+    @reader.read_keypress
   end
 
   def self.quests
     system "cls"
-    puts "KVESTOVI"
+    @igrac.quests.each { |quest| puts quest }
+    puts
+    puts "Press any key to go back"
+    @reader.read_keypress
   end
 
   def self.combat
