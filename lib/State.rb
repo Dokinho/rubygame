@@ -1,5 +1,8 @@
+require_relative "../modules/Combat"
+require_relative "../modules/Questing"
+require_relative "../modules/Shop"
+
 module State
-  # @prompt, @reader, @player, @map = nil, nil, nil, nil
 
   def self.init(prompt, reader, player, map)
     @prompt = prompt
@@ -55,8 +58,18 @@ module State
   end
 
   def self.interaction
-    puts @player.interacting_with
-    sleep 2
+    case @player.interacting_with.class.to_s
+    when "Enemy"
+      Combat.start
+    when "QuestGiver"
+      Questing.display
+    when "Shop"
+      "Asd"
+    else
+      puts "Error! Going back to menu!"
+      sleep 2
+      return "Menu"
+    end
     "Menu"
   end
 

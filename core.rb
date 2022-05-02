@@ -11,9 +11,11 @@ Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
 # -----TEST-----
 @igrac = Player.new
 @zloco = Enemy.new(10, 1, 100)
-@mapa = Map.new("Mapa", 20, 20)
+@questodavac = QuestGiver.new
 
+@mapa = Map.new("Mapa", 20, 20)
 @mapa.add_object(@zloco, 5, 5)
+@mapa.add_object(@questodavac, 3, 7)
 @mapa.add_object(@igrac, 0, 1)
 
 @prompt = TTY::Prompt.new

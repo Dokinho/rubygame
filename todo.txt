@@ -23,3 +23,5 @@
 -(Make map a 3d array (x, y, array of objects) for overlap etc.)?
 
 -Remove player's move_to restrictions for moving out of the map?
+
+-Rename methods so they sound better
