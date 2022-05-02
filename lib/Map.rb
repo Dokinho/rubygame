@@ -20,7 +20,7 @@ class Map
   end
 
   def add_object(obj, x, y)
-    raise OutOfBoundsError if (x < 0) || (x > @width) || (y < 0) || (y > @height)
+    raise OutOfBoundsError unless valid_coordinates(x, y)
     @objects[x][y] = obj
     obj.pos_x = x
     obj.pos_y = y
@@ -31,11 +31,16 @@ class Map
   end
 
   def move_object(obj, x, y)
+    return(move_object(obj, obj.pos_x, obj.pos_y)) unless valid_coordinates(x, y)
     remove_object(obj)
     add_object(obj, x, y)
   end
 
   def check_collision(x, y)
 
+  end
+
+  def valid_coordinates(x, y)
+    (x >= 0) && (x <= @width) && (y >= 0) && (y <= @height)
   end
 end

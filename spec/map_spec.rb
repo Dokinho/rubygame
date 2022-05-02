@@ -26,10 +26,6 @@ RSpec.describe Map do
       expect(map_no_args).to have_attributes(objects: Array.new(25, Array.new(25, "tile")))
     end
 
-    it "has a default look" do
-      expect(map_no_args).to have_attributes(out: Array.new(25, Array.new(25, 0)))
-    end
-
   end
 
   context "with arguments" do
@@ -48,11 +44,7 @@ RSpec.describe Map do
     end
 
     it "has object storage in a 2D array" do
-        expect(map).to have_attributes(objects: Array.new(30, Array.new(20, "tile")))
-    end
-
-    it "has a default look" do
-        expect(map).to have_attributes(out: Array.new(30, Array.new(20, 0)))
+        expect(map).to have_attributes(objects: Array.new(20, Array.new(30, "tile")))
     end
 
   end
@@ -76,14 +68,10 @@ RSpec.describe Map do
       map.add_object(npc, 15, 15)
     end
 
-    it "object coordinates shouldn't be less than 0 or more than the map w/h" do
-      expect { map.add_object(npc, 50, 50) }.to raise_error(Map::OutOfBoundsError)
-      expect { map.add_object(npc, -1, -5) }.to raise_error(Map::OutOfBoundsError)
-    end
-
   end 
 
   context "#remove_object method" do
+
     it "removes the specified object from the map" do
       allow(npc).to receive_messages(pos_x: 10, pos_y: 10)
       map.add_object(npc, 10, 10)
@@ -91,6 +79,14 @@ RSpec.describe Map do
 
       map.remove_object(npc)
       expect(map.objects[10][10]).not_to eq(npc)
+    end
+
+  end
+
+  context "#valid_coordinates method" do
+    it "checks whether given map coordinates are within the map" do
+      expect(map.valid_coordinates(50, 50)).to be_falsy
+      expect(map.valid_coordinates(5, 6)).to be_truthy
     end
   end
 

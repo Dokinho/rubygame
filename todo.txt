@@ -1,8 +1,5 @@
 -Remove object's pos_x and pos_y and let map take care of it?
 
--Add a map method for checking if given coordinates are inside 
-    the map and call it inside every method that needs it
-
 -Make a superclass for all the objects on the map (removes redundancy)
 
 -Remove id attribute from every class and just use object_id
@@ -22,3 +19,5 @@
 -Add an alignment system to terminal output
 
 -Move with arrow keys
+
+-Replace Map OutOfBoundsError with something else?
