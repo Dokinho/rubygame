@@ -26,9 +26,11 @@ module State
 
   def self.walk
     loop do
+
       system "cls"
       @map.render
       input = @reader.read_keypress
+
       case input
       when "w"
         @map.move_object(@player, @player.pos_x - 1, @player.pos_y)
@@ -41,8 +43,21 @@ module State
       when "q"
         break
       end
+
+      npc = @map.npc_collision_at(@player.pos_x, @player.pos_y)
+      if npc
+        @player.interacting_with = npc
+        return "Interaction" 
+      end
+
     end
     "Map"
+  end
+
+  def self.interaction
+    puts npc
+    sleep 2
+    "Menu"
   end
 
   def self.character
