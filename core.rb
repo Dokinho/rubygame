@@ -13,8 +13,8 @@ Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
 @zloco = Enemy.new(10, 1, 100)
 @mapa = Map.new("Mapa", 20, 20)
 
-@mapa.add_object(@igrac, 0, 1)
 @mapa.add_object(@zloco, 5, 5)
+@mapa.add_object(@igrac, 0, 1)
 
 @prompt = TTY::Prompt.new
 @reader = TTY::Reader.new

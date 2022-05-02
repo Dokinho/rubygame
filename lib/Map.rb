@@ -9,38 +9,46 @@ class Map
     @name = name
     @width = width
     @height = height
-    @objects = Array.new(height) { Array.new(width, "tile") }
+    @objects = []
+    @out = Array.new(height) { Array.new(width, "□") }
   end
 
   def render
-    @objects.each do |row|
+    @out = Array.new(height) { Array.new(width, "□") }
+
+    @objects.each do |object|
+      @out[object.pos_x][object.pos_y] = object.map_marker
+    end
+
+    @out.each do |row|
       puts
-      row.each { |tile| tile == "tile" ? print("□ ") : print("#{tile.map_marker} ") }
+      row.each { |tile| print tile + " " }
     end
   end
 
   def add_object(obj, x, y)
     raise OutOfBoundsError unless valid_coordinates(x, y)
-    @objects[x][y] = obj
+    @objects << obj
     obj.pos_x = x
     obj.pos_y = y
   end
 
   def remove_object(obj)
-    @objects[obj.pos_x][obj.pos_y] = "tile"
+    @objects.delete(obj)
   end
 
   def move_object(obj, x, y)
     return(move_object(obj, obj.pos_x, obj.pos_y)) unless valid_coordinates(x, y)
-    remove_object(obj)
-    add_object(obj, x, y)
+    obj.pos_x, obj.pos_y = x, y
   end
 
-  def check_collision(x, y)
-
+  # Returns the collided object if it's a NPC
+  def npc_collision_at(x, y)
+    npcs = @objects.select { |obj| obj.is_a?(Npc) && obj.pos_x == x && obj.pos_y == y }
+    npcs.first
   end
 
   def valid_coordinates(x, y)
-    (x >= 0) && (x <= @width) && (y >= 0) && (y <= @height)
+    (x >= 0) && (x < @width) && (y >= 0) && (y < @height)
   end
 end

@@ -1,5 +1,3 @@
--Remove object's pos_x and pos_y and let map take care of it?
-
 -Make a superclass for all the objects on the map (removes redundancy)
 
 -Remove id attribute from every class and just use object_id
@@ -12,12 +10,16 @@
 
 -Refactor all specs
 
--Out of bounds throws an error and stops the game
-
--Cleanup imports after testing! (State.rb etc.)
+-Cleanup imports after testing!
 
 -Add an alignment system to terminal output
 
--Move with arrow keys
+-Move player with arrow keys
 
 -Replace Map OutOfBoundsError with something else?
+
+-Make player and npcs interact
+
+-(Make map a 3d array (x, y, array of objects) for overlap etc.)?
+
+-Remove player's move_to restrictions for moving out of the map?
