@@ -55,7 +55,7 @@ module State
   end
 
   def self.interaction
-    puts npc
+    puts @player.interacting_with
     sleep 2
     "Menu"
   end
