@@ -34,3 +34,5 @@
     -new class?
 
 -Colorize!
+
+-Ability is very similar to a consumable, do sth?
