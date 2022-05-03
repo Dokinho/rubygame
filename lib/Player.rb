@@ -1,6 +1,8 @@
 require_relative "Inventory"
 require_relative "Ability"
 
+require "colorize"
+
 class Player
   attr_reader :id, :level, :image
   attr_accessor :name, :xp, :health, :damage, :armor, :pos_x, :pos_y, :quests, :dead, :inventory,
@@ -23,7 +25,7 @@ class Player
     @equipped_weapon = nil #Weapon.new
     @abilities = [Ability.new]
     @interacting_with = nil
-    @map_marker = "#"
+    @map_marker = "#".colorize(:blue)
     @image = "A MLS image"
     @gold = 100
     @current_map = Map.new

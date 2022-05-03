@@ -25,3 +25,12 @@
 -Remove player's move_to restrictions for moving out of the map?
 
 -Rename methods so they sound better
+
+-Player equip weapon (and modify player damage)
+
+-Make ABILITY class
+
+-Make timed consumables (effects that last for a certain time)
+    -new class?
+
+-Colorize!

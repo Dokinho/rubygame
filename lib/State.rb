@@ -1,6 +1,6 @@
 require_relative "../modules/Combat"
 require_relative "../modules/Questing"
-require_relative "../modules/Shop"
+require_relative "../modules/Shopping"
 
 module State
 
