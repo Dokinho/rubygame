@@ -60,7 +60,8 @@ module State
   def self.interaction
     case @player.interacting_with.class.to_s
     when "Enemy"
-      Combat.start
+      fight_intro
+      fight
     when "QuestGiver"
       Questing.display
     when "Shop"
@@ -70,7 +71,7 @@ module State
       sleep 2
       return "Menu"
     end
-    "Menu"
+    "Walk"
   end
 
   def self.character
