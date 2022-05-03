@@ -39,9 +39,11 @@ class Game
     ]
 
     # Abilities
-    # Basic attack
-    # Strong attack
-    # Heal
+    @abilities = [
+      Ability.new("Attack", "Basic attack", "-", @igrac.damage, "health")
+    ]
+
+    @igrac.abilities << @abilities[0]
 
     # Map
     @mapa = Map.new("Mapa")

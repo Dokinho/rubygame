@@ -6,7 +6,7 @@ require "colorize"
 class Player
   attr_reader :id, :level, :image
   attr_accessor :name, :xp, :health, :damage, :armor, :pos_x, :pos_y, :quests, :dead, :inventory,
-    :abilities, :interacting_with, :map_marker, :max_health, :gold, :equipped_weapon, :current_map
+    :abilities, :interacting_with, :map_marker, :max_health, :gold, :equipped_weapon
 
   def initialize
     @id = self.object_id
@@ -23,12 +23,11 @@ class Player
     @quests = []
     @inventory = Inventory.new(10)
     @equipped_weapon = nil #Weapon.new
-    @abilities = [Ability.new]
+    @abilities = []
     @interacting_with = nil
     @map_marker = "#".colorize(:blue)
     @image = "A MLS image"
     @gold = 100
-    @current_map = Map.new
   end
 
   def sell_item(item)

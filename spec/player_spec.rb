@@ -114,10 +114,6 @@ RSpec.describe Player do
       expect(player).to have_attributes(gold: 100)
     end
 
-    it "should have a current map reference" do
-      expect(player.current_map).to eq(map) 
-    end
-
   end
 
   context "actions:" do
