@@ -27,6 +27,12 @@ RSpec.describe Shop do
       Shop.new(10)
     end
 
+    it { is_expected.to have_attributes(map_marker: "$") }
+
+    it { is_expected.to have_attributes(greeting: "Welcome to the shop!") }
+
+    it { is_expected.to have_attributes(goodbye: "Come back again soon!") }
+
   end
 
   context "#set_items" do

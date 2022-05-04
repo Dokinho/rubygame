@@ -20,7 +20,7 @@ def display_quests
   choice = @prompt.select("Choose a quest:", choices)
 
   unless choice == "Go Back"
-    quest =  questgiver.quests.find { |quest| quest.name == choice}
+    quest = questgiver.quests.find { |quest| quest.name == choice}
     @player.accept_quest(quest)
   end
 end

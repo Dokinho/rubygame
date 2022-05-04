@@ -64,7 +64,7 @@ module State
     when "QuestGiver"
       questgiver_welcome
     when "Shop"
-      "Asd"
+      shop_welcome
     else
       puts "Error! Going back to menu!"
       sleep 2

@@ -33,12 +33,16 @@ class Player
   def sell_item(item)
     @gold = @gold + item.price
     @inventory.remove(item)
+    "You have sold #{item.name}"
   end
 
   def buy_item(item)
     if @gold >= item.price
       @gold = @gold - item.price
       @inventory.add(item)
+      "You have bought #{item.name}"
+    else
+      "You don't have enough gold!"
     end
   end
 
