@@ -6,6 +6,7 @@ def fight_intro
   system "cls"
   puts "You are fighting #{enemy.name}!"
   sleep 2
+  fight
 end
 
 def fighter_stats
@@ -25,23 +26,23 @@ def player_turn
   if choice == "Run Away"
     system "cls"
     puts "You have run away from the enemy!"
-    sleep 2
+    sleep 1
     return "Run"
   else
     ability =  @player.abilities.find { |ability| ability.name == choice}
     ability.activate(enemy)
 
     puts "#{@player.name} dealt #{@player.damage} damage to #{enemy.name}"
-    sleep 2
+    sleep 1
   end
 end
 
 def enemy_turn
   puts "#{enemy.name}'s turn"
-  sleep 2
+  sleep 1
   enemy.deal_damage(@player)
   puts "#{enemy.name} dealt #{enemy.damage} damage to #{@player.name}"
-  sleep 2
+  sleep 1
 end
 
 def fight

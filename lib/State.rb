@@ -61,9 +61,8 @@ module State
     case @player.interacting_with.class.to_s
     when "Enemy"
       fight_intro
-      fight
     when "QuestGiver"
-      Questing.display
+      questgiver_welcome
     when "Shop"
       "Asd"
     else
