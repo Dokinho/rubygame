@@ -1,7 +1,5 @@
 -Make a superclass for all the objects on the map (removes redundancy)
 
--Remove id attribute from every class and just use object_id
-
 -Add the option to choose image for the player and the enemy
 
 -Add quest requirements tracker
@@ -16,11 +14,7 @@
 
 -Move player with arrow keys
 
--Replace Map OutOfBoundsError with something else?
-
 -(Make map a 3d array (x, y, array of objects) for overlap etc.)?
-
--Remove player's move_to restrictions for moving out of the map?
 
 -Rename methods so they sound better
 

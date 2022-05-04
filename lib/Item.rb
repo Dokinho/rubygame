@@ -2,7 +2,6 @@ class Item
   attr_reader :id, :name, :description, :price, :stackable, :stack_count, :rarity
   
   def initialize(name, description, price, stackable, stack_count, rarity)
-    @id = object_id
     @name = name
     @description = description
     @price = price

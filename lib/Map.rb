@@ -5,7 +5,6 @@ class Map
   class OutOfBoundsError < StandardError; end
 
   def initialize(name = "Default Map", width = 25, height = 25)
-    @id = self.object_id
     @name = name
     @width = width
     @height = height

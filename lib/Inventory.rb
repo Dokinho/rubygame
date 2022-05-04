@@ -5,7 +5,6 @@ class Inventory
   attr_accessor :items
 
   def initialize(max_slots)
-    @id = self.object_id
     @items = []
     @max_slots = max_slots
   end

@@ -19,7 +19,7 @@ RSpec.describe Quest do
   context "with only name and description params" do
 
     it "has the specified name and description" do
-      expect(quest_min_params).to have_attributes(name: "Name")
+      expect(quest_min_params).to have_attributes(name: :Name)
       expect(quest_min_params).to have_attributes(description: "Description")
     end
 
@@ -33,8 +33,7 @@ RSpec.describe Quest do
 
   context "all params" do
 
-    it { is_expected.to have_attributes(id: subject.object_id) }
-    it { is_expected.to have_attributes(name: "Test Quest") }
+    it { is_expected.to have_attributes(name: :"Test Quest") }
     it { is_expected.to have_attributes(description: "A quest") }
     it { is_expected.to have_attributes(xp_reward: 100) }
     it { is_expected.to have_attributes(gold_reward: 200) }

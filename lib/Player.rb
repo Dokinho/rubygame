@@ -1,15 +1,12 @@
 require_relative "Inventory"
 require_relative "Ability"
 
-require "colorize"
-
 class Player
   attr_reader :id, :level, :image
   attr_accessor :name, :xp, :health, :damage, :armor, :pos_x, :pos_y, :quests, :dead, :inventory,
     :abilities, :interacting_with, :map_marker, :max_health, :gold, :equipped_weapon
 
   def initialize
-    @id = self.object_id
     @name = "Player"
     @level = 1
     @xp = 0
@@ -22,10 +19,10 @@ class Player
     @dead = false
     @quests = []
     @inventory = Inventory.new(10)
-    @equipped_weapon = nil #Weapon.new
+    @equipped_weapon = nil
     @abilities = []
     @interacting_with = nil
-    @map_marker = "#".colorize(:blue)
+    @map_marker = "#"
     @image = "A MLS image"
     @gold = 100
   end
@@ -53,23 +50,4 @@ class Player
   def accept_quest(quest)
     @quests.push(quest)
   end
-
-  def move_to(x, y)
-    # Restrict moving out of map
-    x = 0 if x < 0
-    x = current_map.width if x > current_map.width
-    y = 0 if y < 0
-    y = current_map.height if y > current_map.height
-
-    @pos_x, @pos_y = x, y
-
-    # Check for interactions
-    map_obj = @current_map.check_collision(@pos_x, @pos_y)
-    interact(map_obj) if map_obj.class == "Npc"
-  end
-
-  def interact(other)
-
-  end
-
 end

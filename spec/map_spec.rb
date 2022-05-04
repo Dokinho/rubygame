@@ -9,10 +9,6 @@ RSpec.describe Map do
 
   context "without arguments" do
 
-    it "has an id equal to its object_id" do
-      expect(map_no_args).to have_attributes(id: map_no_args.object_id)
-    end
-
     it "has a default name" do
       expect(map_no_args).to have_attributes(name: "Default Map")
     end
@@ -22,17 +18,17 @@ RSpec.describe Map do
       expect(map_no_args).to have_attributes(height: 25)
     end
 
-    it "has object storage in a 2D array" do
-      expect(map_no_args).to have_attributes(objects: Array.new(25, Array.new(25, "tile")))
+    it "has objects stored in an array" do
+      expect(map_no_args).to have_attributes(objects: [])
+    end
+
+    it "has a 2D array of its tiles named 'out'" do
+      expect(map_no_args).to have_attributes(out: Array.new(25) { Array.new(25, "□") })
     end
 
   end
 
   context "with arguments" do
-      
-    it "has an id equal to its object_id" do
-        expect(map).to have_attributes(id: map.object_id)
-    end
 
     it "has a specified name" do
         expect(map).to have_attributes(name: "Mapa")
@@ -43,8 +39,12 @@ RSpec.describe Map do
         expect(map).to have_attributes(height: 20)
     end
 
-    it "has object storage in a 2D array" do
-        expect(map).to have_attributes(objects: Array.new(20, Array.new(30, "tile")))
+    it "has objects stored in an array" do
+        expect(map).to have_attributes(objects: [])
+    end
+
+    it "has a 2D array of its tiles named 'out'" do
+      expect(map).to have_attributes(out: Array.new(20) { Array.new(30, "□") })
     end
 
   end
@@ -59,7 +59,7 @@ RSpec.describe Map do
 
     it "adds an object to the specified coordinates" do
       map.add_object(npc, 10, 10)
-      expect(map.objects[10][10]).to eq(npc)
+      expect(map.objects).to include(npc)
     end
 
     it "added object should have the specified coordinates in itself" do
@@ -72,15 +72,53 @@ RSpec.describe Map do
 
   context "#remove_object method" do
 
-    it "removes the specified object from the map" do
-      allow(npc).to receive_messages(pos_x: 10, pos_y: 10)
+    it "removes the specified object from the objects array" do
       map.add_object(npc, 10, 10)
-      expect(map.objects[10][10]).to eq(npc)
+      expect(map.objects).to include(npc)
 
       map.remove_object(npc)
-      expect(map.objects[10][10]).not_to eq(npc)
+      expect(map.objects).not_to include(npc)
     end
 
+  end
+
+  context "#move_object method" do
+
+    before do
+      allow(npc).to receive(:pos_x).and_return(0)
+      allow(npc).to receive(:pos_y).and_return(0)
+      map.add_object(npc, 0, 0)
+    end
+
+    it "sets object coordinates" do
+      expect(npc).to receive(:pos_x=).with(15)
+      expect(npc).to receive(:pos_y=).with(15)
+
+      map.move_object(npc, 15, 15)
+    end
+
+    it "returns the starting coordinates if they are out of the map" do
+      expect(npc).to receive(:pos_x=).with(0)
+      expect(npc).to receive(:pos_y=).with(0)
+
+      map.move_object(npc, -1, -1)
+    end
+
+  end
+
+  context "#npc_collision_at method" do
+
+    before do
+      allow(npc).to receive(:pos_x).and_return(0)
+      allow(npc).to receive(:pos_y).and_return(0)
+      allow(npc).to receive(:is_a?).and_return(Npc)
+      map.add_object(npc, 0, 0)
+    end
+
+    it "returns a npc object if it is on the specified coordinates or nil if not" do
+      expect(map.npc_collision_at(0, 0)).to eq(npc)
+      expect(map.npc_collision_at(5, 6)).to be_nil
+    end
   end
 
   context "#valid_coordinates method" do

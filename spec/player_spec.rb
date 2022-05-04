@@ -23,7 +23,7 @@ RSpec.describe Player do
   let(:quest) { instance_double(Quest, "Test Quest") }
 
   let(:inventory) { instance_double(Inventory, "Player's inventory",
-    delete: nil, add: nil) }
+    remove: nil, add: nil) }
 
   let(:map) { instance_double(Map, "Test Map", width: 200, height: 150) }
 
@@ -41,10 +41,6 @@ RSpec.describe Player do
   end
 
   context "instantiated" do
-
-    it "has an 'id' equal to its object_id" do
-      expect(player).to have_attributes(id: player.object_id)
-    end
   
     it "has a default name of 'Player'" do
       expect(player).to have_attributes(name: "Player")
@@ -90,12 +86,12 @@ RSpec.describe Player do
       expect(player).to have_attributes(inventory: inventory)
     end
   
-    it "should have a default equipped weapon" do
-      expect(player).to have_attributes(equipped_weapon: weapon)
+    it "should have an equipped weapon attribute" do
+      expect(player).to have_attributes(equipped_weapon: nil)
     end
   
-    it "should have an array of abilities and a default attack ability" do
-      expect(player).to have_attributes(abilities: [ability])
+    it "should have an array of abilities" do
+      expect(player).to have_attributes(abilities: [])
     end
   
     it "should not be interacting with anything" do
@@ -119,18 +115,12 @@ RSpec.describe Player do
   context "actions:" do
 
     let(:weapon) { instance_double(Weapon, "Another Weapon") }
-    let(:item) { instance_double(Item, "Another Item", price: 50) }
+    let(:item) { instance_double(Item, "Another Item", price: 50,
+      name: "Itemmm") }
 
     it "equip a weapon" do
       expect(player).to receive(:equipped_weapon=).with(weapon)
-      expect(player).to have_attributes(equipped_weapon: weapon)
-
       player.equipped_weapon = weapon
-    end
-
-    it "use an item (consumable)" do
-      expect(player).to receive(:use_item).with(consumable)
-      player.use_item(consumable)
     end
 
     context "sell an item" do
@@ -144,10 +134,10 @@ RSpec.describe Player do
         expect { player.sell_item(item) }.to change { player.gold }.by(item.price)
       end
 
-      # it "removes the item from player's inventory" do
-      #   expect(player.inventory).not_to include(item)
-      #   player.sell_item(item)
-      # end
+      it "removes the item from player's inventory" do
+        expect(player.inventory).to receive(:remove).with(item)
+        player.sell_item(item)
+      end
 
     end
 
@@ -162,10 +152,10 @@ RSpec.describe Player do
         expect { player.buy_item(item) }.to change { player.gold }.by(-item.price)
       end
 
-      # it "adds the item to player's inventory" do
-      #   expect(player.inventory).to include(item)
-      #   player.buy_item(item)
-      # end
+      it "adds the item to player's inventory" do
+        expect(player.inventory).to receive(:add).with(item)
+        player.buy_item(item)
+      end
 
     end
 
@@ -193,42 +183,6 @@ RSpec.describe Player do
       expect(player.quests).to include(quest)
     end
 
-    context "#move_to" do
-      before do
-        allow(map).to receive(:check).with(any_args).and_return(nil)
-        allow(map).to receive(:check).with(npc.pos_x, npc.pos_y).and_return(npc)
-      end
-
-      it "moves player to given coordinates on the map" do
-        expect { player.move_to(10, 15) }.to change { player.pos_x }.to(10)
-        expect { player.move_to(3, 20) }.to change { player.pos_y }.to(20)
-      end
-
-      it "forbids the player from going out of the map" do
-        player.move_to(-1, -1)
-        expect(player.pos_x).to eq(0)
-        expect(player.pos_y).to eq(0)
-
-        player.move_to(map.width + 100, map.height + 100)
-        expect(player.pos_x).to eq(map.width)
-        expect(player.pos_y).to eq(map.height)
-      end
-
-    end
-
-    context "#interact" do
-      it "is called by the #move_to method if an NPC is encountered on the map" do
-      end
-      
-    end
-
   end
 
 end
-
-  # subject do
-  #   described_class.new(id: 0, name: "Drc", level: 0, xp: 0, health: 100,
-  #   damage: 10, armor: 2, pos_x: 0, pos_y: 0, dead: false, quests: [],
-  #   inventory: [], equipped_weapon: "Mac", abilities: [], interacting_with: "obj",
-  #   map_marker: "#", image: "Player MLS")
-  # end
