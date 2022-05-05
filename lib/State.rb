@@ -83,8 +83,8 @@ module State
   def self.character
     system "cls"
     puts "-----Player-----"
-    puts "|Name||Level||Health||Damage||Armor||Weapon|"
-    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}    #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon}"
+    puts "|Name||Level||Health||Gold||Damage||Armor||Weapon|"
+    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}  #{@player.gold}     #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon.name}"
     puts
     puts "Press any key to go back"
     @reader.read_keypress
@@ -93,11 +93,36 @@ module State
 
   def self.inventory
     system "cls"
-    @player.inventory.each { |item| puts item }
+    @player.inventory.each { |item| puts item.name }
     puts
-    puts "Press any key to go back"
-    @reader.read_keypress
-    "Menu"
+    @prompt.select("Choose an action:") do |menu|
+      menu.choice "Use"
+      menu.choice "Equip"
+      menu.choice "Go Back", "Menu"
+    end
+  end
+
+  def self.use
+    system "cls"
+    consumables = @player.inventory.select { |item| item.is_a?(Consumable) }
+    choices = consumables.map { |item| "#{item.name}   #{item.description}" }.push("Go Back")
+    choice = @prompt.select("Use an item:", choices)
+    unless choice == "Go Back"
+      @player.inventory.find { |item| choice.include?(item.name) }.affect(@player)
+    end
+    "Inventory"
+  end
+
+  def self.equip
+    system "cls"
+    weapons = @player.inventory.select { |item| item.is_a?(Weapon) }
+    choices = weapons.map { |item| "#{item.name}   #{item.damage} DMG" }.push("Go Back")
+    choice = @prompt.select("Equip a Weapon:", choices)
+    unless choice == "Go Back"
+      chosen_wep = @player.inventory.find { |item| choice.include?(item.name) }
+      @player.equipped_weapon = chosen_wep
+    end
+    "Inventory"
   end
 
   def self.quests
@@ -116,14 +141,4 @@ module State
     exit
   end
 
-  def self.combat
-    system "cls"
-    puts "BORBA"
-  end
-
-  def self.shop
-    system "cls"
-    puts "ŠOPING"
-  end
-  
 end

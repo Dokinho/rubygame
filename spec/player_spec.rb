@@ -209,6 +209,11 @@ RSpec.describe Player do
         subject.health=(-10)
         expect(subject.health).to eq(0)
       end
+
+      it "limits health to max_health" do
+        subject.health=(500)
+        expect(subject.health).to eq(subject.max_health)
+      end
   
     end
 

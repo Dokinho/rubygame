@@ -39,7 +39,7 @@ class Game
     ]
 
     @igrac.inventory.add(@weapons[0])
-    @igrac.inventory.add(@consumables[0])
+    5.times { @igrac.inventory.add(@consumables[0]) }
     @igrac.equipped_weapon = @weapons[0]
 
     # Abilities
@@ -53,11 +53,12 @@ class Game
     @mapa = Map.new("Mapa")
 
     # Add objects to map
+    # Player is added last so it will be rendered when it's on top of something else
     @mapa.add_object(@zloco, 6, 6)
     @mapa.add_object(@sef, 6, 8)
     @mapa.add_object(@vendor, 6, 5)
     @mapa.add_object(@questodavac, 6, 9)
-    @mapa.add_object(@igrac, 13, 13)
+    @mapa.add_object(@igrac, 0, 0)
 
     @prompt = TTY::Prompt.new(quiet: true)
     @reader = TTY::Reader.new

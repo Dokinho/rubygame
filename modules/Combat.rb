@@ -72,7 +72,7 @@ def fight
 end
 
 def victory
-  puts "You killed #{enemy}!"
+  puts "You killed #{enemy.name}!"
   @map.remove_object(enemy)
   sleep 2
 end

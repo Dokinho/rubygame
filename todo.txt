@@ -24,14 +24,25 @@
 -Colorize!
 
 -Ability is very similar to a consumable, do sth?
+    -Effect superclass?
 
 -Player shouldn't be able to select the same quest twice:
     -Make in progress quests and finished quests
 
 -Create an interface for making items, enemies, maps etc.
+    -Create a map editor and different tiles
 
 -Swap x and y coordinates (they're not correct)
 
 -Make player lose gold on death according to a certain formula
 
 -Make accepting a quest return to main questgiver display, not to walking on the map
+
+-Make armor reduce incoming damage according to a formula
+
+-Make a better *finding* algorithm when player equips a weapon or uses a consumable
+
+-Make stackable items actually stack!
+    -Bug: selling one health potion removes them all from inventory
+
+-Make the map always visible / menu accessible beneath the map?

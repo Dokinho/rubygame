@@ -58,7 +58,9 @@ class Player
   end
 
   def health=(health)
-    if health <= 0
+    if health > max_health
+      @health = max_health
+    elsif health <= 0
       @health = 0
       @dead = true
     else
