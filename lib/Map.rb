@@ -23,6 +23,7 @@ class Map
       puts
       row.each { |tile| print tile + " " }
     end
+    puts
   end
 
   def add_object(obj, x, y)

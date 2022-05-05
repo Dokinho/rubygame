@@ -55,7 +55,7 @@ class Game
     @mapa.add_object(@questodavac, 6, 9)
     @mapa.add_object(@igrac, 13, 13)
 
-    @prompt = TTY::Prompt.new
+    @prompt = TTY::Prompt.new(quiet: true)
     @reader = TTY::Reader.new
   end
 

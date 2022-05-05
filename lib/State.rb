@@ -14,7 +14,7 @@ module State
   def self.menu
     system "cls"
     selection = %w(Map Character Inventory Quests Quit)
-    @prompt.select("-----MAIN MENU-----", selection)
+    @prompt.select("-----MAIN MENU-----", selection, cycle: true)
   end
 
   def self.map
@@ -24,7 +24,7 @@ module State
     puts "@ -> Enemy"
     puts "$ -> Shop"
     @map.render
-    @prompt.select("Choose an action:", %w(Walk Menu) )
+    @prompt.select("Choose an action:", %w(Walk Menu), cycle: true )
   end
 
   def self.walk
@@ -32,6 +32,7 @@ module State
 
       system "cls"
       @map.render
+      puts "WASD to move, Q to go back"
       input = @reader.read_keypress
 
       case input

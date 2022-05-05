@@ -29,3 +29,9 @@
 
 -Player shouldn't be able to select the same quest twice:
     -Make in progress quests and finished quests
+
+-Show map controls
+
+-Create an interface for making items, enemies, maps etc.
+
+-Swap x and y coordinates (they're not correct)
