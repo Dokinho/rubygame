@@ -197,5 +197,60 @@ RSpec.describe Player do
       end
   
     end
+
+    context "#health=" do
+
+      it "sets 'dead' to true if health is less than or equal to 0" do
+        subject.health=(-5)
+        expect(subject.dead).to be_truthy
+      end
+  
+      it "sets 'health' to 0 if health is less than 0" do
+        subject.health=(-10)
+        expect(subject.health).to eq(0)
+      end
+  
+    end
+
+    context "#respawn" do
+
+      it "resets the player's coordinates" do
+        player.respawn
+        expect(player).to have_attributes(pos_x: 0, pos_y: 0)
+      end
+
+      it "resets player's health" do
+        player.respawn
+        expect(player.health).to eq(player.max_health)
+      end
+
+      it "makes the player lose some gold" do
+        expect { player.respawn }.to change {player.gold}
+      end
+
+      it "sets 'dead' back to false" do
+        player.dead = true
+        expect(player.dead).to be_truthy
+        
+        player.respawn
+        expect(player.dead).to be_falsy
+      end
+
+    end
+
+    context "#gold=" do
+
+      it "sets player's gold to a value" do
+        player.gold = 350
+        expect(player.gold).to eq(350)
+      end
+
+      it "sets gold to 0 if it goes below 0" do
+        player.gold = -100
+        expect(player.gold).to eq(0)
+      end
+
+    end
+
   end
 end

@@ -31,3 +31,7 @@
 -Create an interface for making items, enemies, maps etc.
 
 -Swap x and y coordinates (they're not correct)
+
+-Make player lose gold on death according to a certain formula
+
+-Make accepting a quest return to main questgiver display, not to walking on the map

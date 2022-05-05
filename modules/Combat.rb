@@ -61,10 +61,10 @@ def fight
       enemy_turn
     end
     
-    if @player.health <= 0
+    if @player.dead
       deadman = true
       defeat
-    elsif enemy.health <= 0
+    elsif enemy.dead
       deadman = true
       victory
     end
@@ -73,11 +73,13 @@ end
 
 def victory
   puts "You killed #{enemy}!"
+  @map.remove_object(enemy)
   sleep 2
 end
 
 def defeat
- puts "Ah sheesh...you died"
- puts "You will respawn"
- sleep 2
+  puts "Ah sheesh...you died"
+  puts "You will respawn"
+  sleep 2
+  # Player respawn is handled in "State", not here
 end

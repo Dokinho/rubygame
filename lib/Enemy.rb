@@ -20,4 +20,13 @@ class Enemy < Npc
   def deal_damage(target)
     target.health -= damage
   end
+
+  def health=(health)
+    if health <= 0
+      @health = 0
+      @dead = true
+    else
+      @health = health
+    end
+  end
 end

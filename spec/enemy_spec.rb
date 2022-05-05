@@ -42,10 +42,27 @@ RSpec.describe Enemy do
 
   end
 
-  context "#deal_damage method" do
+  context "#deal_damage" do
+
     it "reduces target's health" do
       expect(player).to receive(:health=).with(95)
       subject.deal_damage(player)
     end
+    
   end
+
+  context "#health=" do
+
+    it "sets 'dead' to true if health is less than or equal to 0" do
+      subject.health=(-5)
+      expect(subject.dead).to be_truthy
+    end
+
+    it "sets 'health' to 0 if health is less than 0" do
+      subject.health=(-10)
+      expect(subject.health).to eq(0)
+    end
+
+  end
+
 end

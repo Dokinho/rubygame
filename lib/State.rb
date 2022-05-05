@@ -71,7 +71,13 @@ module State
       sleep 2
       return "Menu"
     end
+
+    if @player.dead
+      @player.respawn
+      "Menu"
+    else
     "Walk"
+    end
   end
 
   def self.character
