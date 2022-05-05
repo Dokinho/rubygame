@@ -96,7 +96,7 @@ module State
 
   def self.quests
     system "cls"
-    @player.quests.each { |quest| puts quest }
+    @player.quests.each { |quest| puts quest.name }
     puts
     puts "Press any key to go back"
     @reader.read_keypress

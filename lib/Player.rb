@@ -2,9 +2,9 @@ require_relative "Inventory"
 require_relative "Ability"
 
 class Player
-  attr_reader :id, :level, :image
-  attr_accessor :name, :xp, :health, :damage, :armor, :pos_x, :pos_y, :quests, :dead, :inventory,
-    :abilities, :interacting_with, :map_marker, :max_health, :gold, :equipped_weapon
+  attr_reader :id, :level, :image, :equipped_weapon
+  attr_accessor :name, :xp, :health, :base_damage, :damage, :armor, :pos_x, :pos_y, :quests,
+  :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health, :gold
 
   def initialize
     @name = "Player"
@@ -12,7 +12,8 @@ class Player
     @xp = 0
     @health = 100
     @max_health = 100
-    @damage = 1
+    @base_damage = 1
+    @damage = base_damage
     @armor = 1
     @pos_x = 0
     @pos_y = 0
@@ -49,5 +50,10 @@ class Player
 
   def accept_quest(quest)
     @quests.push(quest)
+  end
+
+  def equipped_weapon=(weapon)
+    @damage = @base_damage + weapon.damage
+    @equipped_weapon = weapon
   end
 end

@@ -20,10 +20,9 @@ class Map
     end
 
     @out.each do |row|
-      puts
       row.each { |tile| print tile + " " }
+      puts
     end
-    puts
   end
 
   def add_object(obj, x, y)

@@ -18,8 +18,6 @@
 
 -Rename methods so they sound better
 
--Player equip weapon (and modify player damage)
-
 -Make timed consumables (effects that last for a certain time)
     -new class?
 
@@ -29,8 +27,6 @@
 
 -Player shouldn't be able to select the same quest twice:
     -Make in progress quests and finished quests
-
--Show map controls
 
 -Create an interface for making items, enemies, maps etc.
 

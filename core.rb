@@ -38,6 +38,10 @@ class Game
         true, 5, "Common", "*", 2, "damage")
     ]
 
+    @igrac.inventory.add(@weapons[0])
+    @igrac.inventory.add(@consumables[0])
+    @igrac.equipped_weapon = @weapons[0]
+
     # Abilities
     @abilities = [
       Ability.new("Attack", "Basic attack", "-", @igrac.damage, "health")

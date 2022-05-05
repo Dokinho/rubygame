@@ -58,7 +58,11 @@ RSpec.describe Player do
       expect(player).to have_attributes(max_health: 100)
     end
   
-    it "should start with 1 damage" do
+    it "should start with 1 base damage" do
+      expect(player).to have_attributes(base_damage: 1)
+    end
+
+    it "should have total damage equal to its base damage" do
       expect(player).to have_attributes(damage: 1)
     end
   
@@ -114,14 +118,11 @@ RSpec.describe Player do
 
   context "actions:" do
 
-    let(:weapon) { instance_double(Weapon, "Another Weapon") }
-    let(:item) { instance_double(Item, "Another Item", price: 50,
-      name: "Itemmm") }
+    let(:weapon) { instance_double(Weapon, "Another Weapon", damage: 10) }
 
-    it "equip a weapon" do
-      expect(player).to receive(:equipped_weapon=).with(weapon)
-      player.equipped_weapon = weapon
-    end
+    let(:item) { instance_double(Item, "Another Item", price: 50,
+      name: "Itemmm")
+    }
 
     context "sell an item" do
 
@@ -183,6 +184,18 @@ RSpec.describe Player do
       expect(player.quests).to include(quest)
     end
 
-  end
+    context "#equipped_weapon=" do
 
+      it "modifies player's equipped weapon attribute" do
+        player.equipped_weapon = weapon
+        expect(player.equipped_weapon).to eq(weapon)
+      end
+
+      it "modifies player's damage attribute" do
+        player.equipped_weapon = weapon
+        expect(player.damage).to eq(11)
+      end
+  
+    end
+  end
 end
