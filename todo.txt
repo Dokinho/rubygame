@@ -1,7 +1,5 @@
 -Make a superclass for all the objects on the map (removes redundancy)
 
--Add the option to choose image for the player and the enemy
-
 -Add quest requirements tracker
 
 -Add a main menu with New Game (with character creation), Load Game, About, and Quit

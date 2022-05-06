@@ -13,8 +13,9 @@ module State
 
   def self.menu
     system "cls"
+    puts Text::MAIN_MENU
     selection = %w(Map Character Inventory Quests Quit)
-    @prompt.select("-----MAIN MENU-----", selection, cycle: true)
+    @prompt.select("Choose an action:", selection, cycle: true)
   end
 
   def self.map
@@ -82,7 +83,7 @@ module State
 
   def self.character
     system "cls"
-    puts "-----Player-----"
+    puts Text::PLAYER
     puts "|Name||Level||Health||Gold||Damage||Armor||Weapon|"
     puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}  #{@player.gold}     #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon.name}"
     puts
@@ -93,6 +94,7 @@ module State
 
   def self.inventory
     system "cls"
+    puts Text::INVENTORY
     @player.inventory.each { |item| puts item.name }
     puts
     @prompt.select("Choose an action:") do |menu|
@@ -127,6 +129,7 @@ module State
 
   def self.quests
     system "cls"
+    puts Text::QUESTS
     @player.quests.each { |quest| puts quest.name }
     puts
     puts "Press any key to go back"

@@ -2,11 +2,16 @@
 require "rubygems"
 require "bundler/Setup"
 
+# TTY
 require "tty-prompt"
 require "tty-reader"
 
 # Requires all files from "lib" folder
 Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
+
+# Include game art
+require_relative "image_art/Image"
+require_relative "image_art/Text"
 
 class Game
 
