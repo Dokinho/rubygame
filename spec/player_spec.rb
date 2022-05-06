@@ -7,6 +7,7 @@ require_relative "../lib/Quest"
 require_relative "../lib/Inventory"
 require_relative "../lib/Map"
 require_relative "../lib/NPC"
+require_relative "../image_art/Image"
 
 RSpec.describe Player do
 
@@ -107,7 +108,7 @@ RSpec.describe Player do
     end
   
     it "has a default ASCII image" do
-      expect(player).to have_attributes(image: "A MLS image")
+      expect(player).to have_attributes(image: Image::PLAYER_DEFAULT)
     end
 
     it "has got starting gold of 100" do

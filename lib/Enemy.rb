@@ -14,7 +14,7 @@ class Enemy < Npc
     @inventory = Inventory.new(5)
     @dead = false
     @map_marker = "@"
-    @image = "image"
+    @image = Image::ENEMY_DEFAULT
   end
 
   def deal_damage(target)

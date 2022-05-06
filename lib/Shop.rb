@@ -2,12 +2,13 @@ require_relative "Npc"
 require_relative "Inventory"
 
 class Shop < Npc
-  attr_accessor :inventory, :greeting, :goodbye
+  attr_accessor :inventory, :greeting, :goodbye, :image
 
   def initialize(slots)
     super()
     @inventory = Inventory.new(slots)
     @map_marker = "$"
+    @image = Image::SHOP_DEFAULT
     @greeting = "Welcome to the shop!"
     @goodbye = "Come back again soon!"
   end

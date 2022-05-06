@@ -1,5 +1,6 @@
 require_relative "../lib/Enemy"
 require_relative "../lib/Player"
+require_relative "../image_art/Image"
 require_relative "npc_shared_examples"
 
 RSpec.describe Enemy do
@@ -37,7 +38,7 @@ RSpec.describe Enemy do
     end
 
     it "has an image" do
-      expect(subject).to have_attributes(image: subject.image)
+      expect(subject).to have_attributes(image: Image::ENEMY_DEFAULT)
     end
 
   end

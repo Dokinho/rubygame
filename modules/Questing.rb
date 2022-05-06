@@ -5,6 +5,7 @@ end
 def questgiver_welcome
   loop do
     system "cls"
+    puts questgiver.image
     puts questgiver.greeting
     choice = @prompt.select("Choose an action:", ["Browse Quests", "Leave"])
     choice == "Browse Quests" ? display_quests : questgiver_goodbye; break

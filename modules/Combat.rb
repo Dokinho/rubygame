@@ -4,20 +4,18 @@ end
 
 def fight_intro
   system "cls"
+  puts enemy.image
   puts "You are fighting #{enemy.name}!"
   sleep 2
   fight
 end
 
 def fighter_stats
-  puts "#{@player.name}   HP: #{@player.health} / #{@player.max_health}"
-  puts
-  puts "         VS"
-  puts
-  puts "#{enemy.name}   HP: #{enemy.health} / #{enemy.max_health}"
+  puts "#{@player.name}   HP: #{@player.health} / #{@player.max_health}     VS     #{enemy.name}   HP: #{enemy.health} / #{enemy.max_health}"
 end
 
 def player_turn
+  puts @player.image
   puts "#{@player.name}'s turn"
 
   choices = @player.abilities.map { |ability| ability.name }.push("Run Away")
@@ -38,6 +36,7 @@ def player_turn
 end
 
 def enemy_turn
+  puts enemy.image
   puts "#{enemy.name}'s turn"
   sleep 1
   enemy.deal_damage(@player)

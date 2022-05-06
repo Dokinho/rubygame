@@ -139,8 +139,7 @@ module State
 
   def self.quit
     system "cls"
-    puts "Thanks for playing!"
-    sleep 1
+    puts Text::THANKS_FOR_PLAYING
     exit
   end
 

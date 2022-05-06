@@ -1,5 +1,6 @@
 require_relative "../lib/Shop"
 require_relative "../lib/Item"
+require_relative "../image_art/Image"
 require_relative "npc_shared_examples"
 
 RSpec.describe Shop do
@@ -28,6 +29,10 @@ RSpec.describe Shop do
     end
 
     it { is_expected.to have_attributes(map_marker: "$") }
+
+    it "has an image" do
+      expect(subject).to have_attributes(image: Image::SHOP_DEFAULT)
+    end
 
     it { is_expected.to have_attributes(greeting: "Welcome to the shop!") }
 

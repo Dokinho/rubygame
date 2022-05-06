@@ -44,3 +44,14 @@
     -Bug: selling one health potion removes them all from inventory
 
 -Make the map always visible / menu accessible beneath the map?
+
+-Add defaults to the end of every file?
+
+-Change "image" sizes!
+
+-Change enemy image
+
+-Add a calculate_damage method to player (it should remove bugs, for example selling an equipped weapon and retaining dmg from it)
+    -Adds player base damage and weapon damage
+
+-Make displays for Combat, Shopping and Questgiver prettier

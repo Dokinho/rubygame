@@ -24,7 +24,7 @@ class Player
     @abilities = []
     @interacting_with = nil
     @map_marker = "#"
-    @image = "A MLS image"
+    @image = Image::PLAYER_DEFAULT
     @gold = 100
   end
 

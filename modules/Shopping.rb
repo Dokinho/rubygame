@@ -5,6 +5,7 @@ end
 def shop_welcome
   loop do
     system "cls"
+    puts shopp.image
     puts shopp.greeting
     choice = @prompt.select("Choose an action:", ["Buy Items", "Sell Items", "Leave"])
     
@@ -52,6 +53,7 @@ end
 
 def shop_goodbye
   system "cls"
+  puts shopp.image
   puts shopp.goodbye
   sleep 2
 end
