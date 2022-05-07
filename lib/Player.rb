@@ -31,6 +31,7 @@ class Player
   def sell_item(item)
     @gold = @gold + item.price
     @inventory.remove(item)
+    @damage = @base_damage if item == equipped_weapon
     "You have sold #{item.name}"
   end
 

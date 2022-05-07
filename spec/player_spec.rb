@@ -119,7 +119,8 @@ RSpec.describe Player do
 
   context "actions:" do
 
-    let(:weapon) { instance_double(Weapon, "Another Weapon", damage: 10) }
+    let(:weapon) { instance_double(Weapon, "Another Weapon", name: "Oruzje",
+      price: 50, damage: 10) }
 
     let(:item) { instance_double(Item, "Another Item", price: 50,
       name: "Itemmm")
@@ -139,6 +140,12 @@ RSpec.describe Player do
       it "removes the item from player's inventory" do
         expect(player.inventory).to receive(:remove).with(item)
         player.sell_item(item)
+      end
+
+      it "checks if the sold item is the equipped weapon and adjusts player damage" do
+        player.equipped_weapon = weapon
+        player.sell_item(weapon)
+        expect(player).to have_attributes(damage: 1)
       end
 
     end

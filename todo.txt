@@ -39,6 +39,7 @@
 -Make armor reduce incoming damage according to a formula
 
 -Make a better *finding* algorithm when player equips a weapon or uses a consumable
+    -Use IDs
 
 -Make stackable items actually stack!
     -Bug: selling one health potion removes them all from inventory
@@ -51,7 +52,6 @@
 
 -Change enemy image
 
--Add a calculate_damage method to player (it should remove bugs, for example selling an equipped weapon and retaining dmg from it)
-    -Adds player base damage and weapon damage
-
 -Make displays for Combat, Shopping and Questgiver prettier
+
+-(Convert all line endings to LF?)
