@@ -13,7 +13,7 @@ class Player
     @health = 100
     @max_health = 100
     @base_damage = 1
-    @damage = base_damage
+    @damage = 1
     @armor = 1
     @pos_x = 0
     @pos_y = 0
@@ -31,7 +31,7 @@ class Player
   def sell_item(item)
     @gold = @gold + item.price
     @inventory.remove(item)
-    @damage = @base_damage if item == equipped_weapon
+    @equipped_weapon = nil if item == @equipped_weapon
     "You have sold #{item.name}"
   end
 
@@ -54,7 +54,11 @@ class Player
   end
 
   def equipped_weapon=(weapon)
-    @damage = @base_damage + weapon.damage
+    if weapon.nil?
+      @damage = @base_damage
+    else
+      @damage = @base_damage + weapon.damage
+    end
     @equipped_weapon = weapon
   end
 
@@ -78,6 +82,13 @@ class Player
 
   def gold=(gold)
     (gold < 0) ? @gold = 0 : @gold = gold
+  end
+
+  # This should be used instead of manually adding abilities to Player
+  # because it sets the owner of the ability automatically
+  def add_ability(ability)
+    @abilities << ability
+    ability.owner = self
   end
 
 end

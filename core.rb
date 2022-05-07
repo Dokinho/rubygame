@@ -43,16 +43,10 @@ class Game
         true, 5, "Common", "*", 2, "damage")
     ]
 
-    @igrac.inventory.add(@weapons[0])
-    5.times { @igrac.inventory.add(@consumables[0]) }
-    @igrac.equipped_weapon = @weapons[0]
-
     # Abilities
     @abilities = [
-      Ability.new("Attack", "Basic attack", "-", @igrac.damage, "health")
+      Ability.new("Attack", "Basic attack", "-", "@owner.damage", "health")
     ]
-
-    @igrac.abilities << @abilities[0]
 
     # Map
     @mapa = Map.new("Mapa")
@@ -64,6 +58,15 @@ class Game
     @mapa.add_object(@vendor, 6, 5)
     @mapa.add_object(@questodavac, 6, 9)
     @mapa.add_object(@igrac, 0, 0)
+
+    # Add stuff to player
+    @igrac.inventory.add(@weapons[0])
+    3.times { @igrac.inventory.add(@consumables[0]) }
+    @igrac.equipped_weapon = @weapons[0]
+    @igrac.add_ability(@abilities[0])
+
+    # Add stuff to the shop
+    @vendor.set_items(@weapons[1], @weapons[2], @consumables[0], @consumables[1])
 
     @prompt = TTY::Prompt.new(quiet: true)
     @reader = TTY::Reader.new

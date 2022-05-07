@@ -15,7 +15,7 @@ RSpec.describe Player do
 
   let(:weapon) { instance_double(Weapon, "Default Weapon") }
 
-  let(:ability) { instance_double(Ability, "Attack") }
+  let(:ability) { instance_double(Ability, "Attack", :owner= => "owner set") }
 
   let(:consumable) { instance_double(Consumable, "Eat me") }
 
@@ -142,10 +142,11 @@ RSpec.describe Player do
         player.sell_item(item)
       end
 
-      it "checks if the sold item is the equipped weapon and adjusts player damage" do
+      it "checks if the sold item is the equipped weapon and 'unequips' it if true" do
         player.equipped_weapon = weapon
+
         player.sell_item(weapon)
-        expect(player).to have_attributes(damage: 1)
+        expect(player).to have_attributes(equipped_weapon: nil)
       end
 
     end
@@ -202,6 +203,14 @@ RSpec.describe Player do
       it "modifies player's damage attribute" do
         player.equipped_weapon = weapon
         expect(player.damage).to eq(11)
+      end
+
+      it "resets player's damage if a weapon is unequipped" do
+        player.equipped_weapon = weapon
+        expect(player.damage).to eq(11)
+
+        player.equipped_weapon = nil
+        expect(player.damage).to eq(1)
       end
   
     end
@@ -265,5 +274,16 @@ RSpec.describe Player do
 
     end
 
+    context "#add_ability" do
+      it "adds the ability to player's ability array" do
+        player.add_ability(ability)
+        expect(player.abilities).to include(ability)
+      end
+
+      it "sets the ability's owner to player" do
+        expect(ability).to receive(:owner=).with(player)
+        player.add_ability(ability)
+      end
+    end
   end
 end

@@ -1,6 +1,6 @@
 class Ability
   attr_reader :name, :description, :type, :attribute
-  attr_accessor :amount
+  attr_accessor :amount, :owner
 
   def initialize(name, description, type, amount, attribute)
     @name = name.to_sym
@@ -8,6 +8,7 @@ class Ability
     @type = type
     @amount = amount
     @attribute = attribute
+    @owner = nil
   end
 
   def activate(target)
