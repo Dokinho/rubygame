@@ -1,5 +1,3 @@
--Make a superclass for all the objects on the map (removes redundancy)
-
 -Add quest requirements tracker
 
 -Add a main menu with New Game (with character creation), Load Game, About, and Quit
@@ -54,4 +52,8 @@
 
 -Make displays for Combat, Shopping and Questgiver prettier
 
--(Convert all line endings to LF?)
+-Unequipping a weapon breaks character screen
+-Damage is not reduced when an equipped weapon is sold
+    -Make equipping a weapon remove it from the inventory and disable selling equipped weapons
+
+-Make damages a range

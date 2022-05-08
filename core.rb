@@ -76,7 +76,7 @@ class Game
     State.init(@prompt, @reader, @igrac, @mapa)
     choice = "Menu"
     loop do
-      # Every State method should return a value with the same name as another state method
+      # Every State method should return a value with the same name as another State method
       choice = eval("State.#{choice.downcase}")
     end
   end

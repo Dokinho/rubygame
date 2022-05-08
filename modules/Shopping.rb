@@ -10,10 +10,8 @@ def shop_welcome
     choice = @prompt.select("Choose an action:", ["Buy Items", "Sell Items", "Leave"])
     
     case choice
-    when "Buy Items"
-      buy
-    when "Sell Items"
-      sell
+    when "Buy Items" then buy
+    when "Sell Items" then sell
     when "Leave"
       shop_goodbye
       break
@@ -22,32 +20,40 @@ def shop_welcome
 end
 
 def buy
-  system "cls"
-  puts "-----#{shopp.name}-----"
-  puts
+  loop do
+    system "cls"
+    puts "-----#{shopp.name}-----"
+    puts
 
-  choices = shopp.inventory.map { |item| item.name }.push("Go Back")
-  choice = @prompt.select("Buy an item:", choices)
+    choices = shopp.inventory.map { |item| item.name }.push("Go Back")
+    choice = @prompt.select("Buy an item:", choices)
 
-  unless choice == "Go Back"
-    item = shopp.inventory.find { |item| item.name == choice}
-    puts @player.buy_item(item)
-    sleep 1
+    if choice == "Go Back"
+      break
+    else
+      item = shopp.inventory.find { |item| item.name == choice}
+      puts @player.buy_item(item)
+      sleep 1
+    end
   end
 end
 
 def sell
-  system "cls"
-  puts "-----#{shopp.name}-----"
-  puts
+  loop do
+    system "cls"
+    puts "-----#{shopp.name}-----"
+    puts
 
-  choices = @player.inventory.map { |item| item.name }.push("Go Back")
-  choice = @prompt.select("Sell an item:", choices)
+    choices = @player.inventory.map { |item| item.name }.push("Go Back")
+    choice = @prompt.select("Sell an item:", choices)
 
-  unless choice == "Go Back"
-    item = @player.inventory.find { |item| item.name == choice}
-    puts @player.sell_item(item)
-    sleep 1
+    if choice == "Go Back"
+      break
+    else
+      item = @player.inventory.find { |item| item.name == choice}
+      puts @player.sell_item(item)
+      sleep 1
+    end
   end
 end
 

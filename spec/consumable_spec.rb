@@ -15,7 +15,6 @@ RSpec.describe Consumable do
   let(:dummy) { instance_double(Player, "Dummy", health: 100) }
 
   it "has certain attributes" do
-    expect(health_pot).to have_attributes(id: health_pot.object_id)
     expect(health_pot).to have_attributes(name: "Health potion")
     expect(health_pot).to have_attributes(description: "Heals for 20")
     expect(health_pot).to have_attributes(price: 50)
