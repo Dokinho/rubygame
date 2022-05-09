@@ -12,8 +12,10 @@ class Ability
   end
 
   def activate(target)
-    str = "target.#{@attribute} #{@type}= #{@amount}"
+    actual_amount = eval(@amount)
+    str = "target.#{@attribute} #{@type}= #{actual_amount}"
     eval(str)
+    actual_amount
   end 
 
   def crit(chance)

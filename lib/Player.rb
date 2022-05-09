@@ -4,7 +4,7 @@ require_relative "Ability"
 class Player
   attr_reader :id, :level, :image, :equipped_weapon, :health, :gold
   attr_accessor :name, :xp, :base_damage, :damage, :armor, :pos_x, :pos_y, :quests,
-  :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health
+    :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health
 
   def initialize
     @name = "Player"
@@ -12,8 +12,8 @@ class Player
     @xp = 0
     @health = 100
     @max_health = 100
-    @base_damage = 1
-    @damage = 1
+    @base_damage = 1..5
+    @damage = 1..5
     @armor = 1
     @pos_x = 0
     @pos_y = 0
@@ -57,7 +57,7 @@ class Player
     if weapon.nil?
       @damage = @base_damage
     else
-      @damage = @base_damage + weapon.damage
+      @damage = weapon.damage
     end
     @equipped_weapon = weapon
   end

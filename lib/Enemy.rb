@@ -5,8 +5,8 @@ class Enemy < Npc
   attr_reader :damage, :dead, :map_marker, :image, :max_health
   attr_accessor :armor, :health, :inventory
 
-  def initialize(damage, armor, max_health)
-    super()
+  def initialize(name, damage, armor, max_health)
+    super(name)
     @damage = damage
     @armor = armor
     @max_health = max_health
@@ -18,7 +18,9 @@ class Enemy < Npc
   end
 
   def deal_damage(target)
-    target.health -= damage
+    amount = rand(@damage)
+    target.health -= amount
+    amount
   end
 
   def health=(health)

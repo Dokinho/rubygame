@@ -85,7 +85,7 @@ module State
     system "cls"
     puts Text::PLAYER
     puts "|Name||Level||Health||Gold||Damage||Armor||Weapon|"
-    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}  #{@player.gold}     #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon.name}"
+    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}  #{@player.gold} #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon.name}"
     puts
     puts "Press any key to go back"
     @reader.read_keypress

@@ -28,9 +28,9 @@ def player_turn
     return "Run"
   else
     ability =  @player.abilities.find { |ability| ability.name == choice}
-    ability.activate(enemy)
+    amount = ability.activate(enemy)
 
-    puts "#{@player.name} dealt #{@player.damage} damage to #{enemy.name}"
+    puts "#{@player.name} dealt #{amount} damage to #{enemy.name}"
     sleep 1
   end
 end
@@ -39,8 +39,8 @@ def enemy_turn
   puts enemy.image
   puts "#{enemy.name}'s turn"
   sleep 1
-  enemy.deal_damage(@player)
-  puts "#{enemy.name} dealt #{enemy.damage} damage to #{@player.name}"
+  amount = enemy.deal_damage(@player)
+  puts "#{enemy.name} dealt #{amount} damage to #{@player.name}"
   sleep 1
 end
 

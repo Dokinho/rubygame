@@ -19,8 +19,8 @@ class Game
     # Player and NPCs
     @igrac = Player.new
 
-    @zloco = Enemy.new(10, 1, 50)
-    @sef = Enemy.new(15, 3, 200)
+    @zloco = Enemy.new("Lopov", 5..10, 1, 50)
+    @sef = Enemy.new("Boss", 10..20, 3, 200)
     @vendor = Shop.new(10)
     @questodavac = QuestGiver.new
     @questodavac.quests << Quest.new("First quest!",
@@ -30,9 +30,9 @@ class Game
 
     # Weapons
     @weapons = [
-      Weapon.new("Sword", "Basic sword", 100, false, 1, "Common", 10, 1),
-      Weapon.new("Dagger", "Basic dagger", 150, false, 1, "Common", 12, 1),
-      Weapon.new("Mace", "Basic mace", 250, false, 1, "Common", 25, 1)
+      Weapon.new("Sword", "Basic sword", 100, false, 1, "Common", 10..15, 1),
+      Weapon.new("Dagger", "Basic dagger", 150, false, 1, "Common", 12..16, 1),
+      Weapon.new("Mace", "Basic mace", 250, false, 1, "Common", 13..20, 1)
     ]
 
     # Consumables
@@ -45,7 +45,7 @@ class Game
 
     # Abilities
     @abilities = [
-      Ability.new("Attack", "Basic attack", "-", "@owner.damage", "health")
+      Ability.new("Attack", "Basic attack", "-", "rand(@owner.damage)", "health")
     ]
 
     # Map

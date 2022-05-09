@@ -4,17 +4,17 @@ require_relative "../image_art/Image"
 require_relative "npc_shared_examples"
 
 RSpec.describe Enemy do
-  subject { Enemy.new(5, 1, 100) }
+  subject { Enemy.new("Lopov", 10..15, 1, 100) }
   include_examples "npc basic attributes"
 
   let(:inventory) { instance_double(Inventory, "Enemy Inv")}
   let(:player) { instance_double(Player, "Faker", health: 100,
     :health= => "ok") }
 
-  context "enemy attributes" do
+  context "attributes" do
 
-    it "has damage" do
-      expect(subject).to have_attributes(damage: 5)
+    it "has damage as a range" do
+      expect(subject).to have_attributes(damage: 10..15)
     end
 
     it "has armor" do
@@ -46,7 +46,7 @@ RSpec.describe Enemy do
   context "#deal_damage" do
 
     it "reduces target's health" do
-      expect(player).to receive(:health=).with(95)
+      expect(player).to receive(:health=).with(be >= 85 && be <= 90)
       subject.deal_damage(player)
     end
     

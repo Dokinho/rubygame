@@ -54,6 +54,15 @@
 
 -Unequipping a weapon breaks character screen
 -Damage is not reduced when an equipped weapon is sold
-    -Make equipping a weapon remove it from the inventory and disable selling equipped weapons
+    -Make equipping a weapon remove it from the inventory and disable selling equipped weapons?
+    -Make a default "fists" weapon?
 
 -Make damages a range
+
+-Make xp do something
+    -Levels should have a formula based on xp
+
+-Ability should return a general string of what happened?
+("Player dealt 15 dmg to enemy" or "Player healed for 30 health")
+
+-State spec should contain tests that assert if a certain thing is output
