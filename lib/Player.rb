@@ -2,9 +2,10 @@ require_relative "Inventory"
 require_relative "Ability"
 
 class Player
-  attr_reader :id, :level, :image, :equipped_weapon, :health, :gold
+  attr_reader :id, :level, :image, :equipped_weapon, :health, :mana, :gold
   attr_accessor :name, :xp, :base_damage, :damage, :armor, :pos_x, :pos_y, :quests,
-    :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health
+    :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health,
+    :max_mana
 
   def initialize
     @name = "Player"
@@ -12,6 +13,8 @@ class Player
     @xp = 0
     @health = 100
     @max_health = 100
+    @mana = 100
+    @max_mana = 100
     @base_damage = 1..5
     @damage = 1..5
     @armor = 1
@@ -70,6 +73,16 @@ class Player
       @dead = true
     else
       @health = health
+    end
+  end
+
+  def mana=(mana)
+    if mana > max_mana
+      @mana = max_mana
+    elsif mana <= 0
+      @mana = 0
+    else
+      @mana = mana
     end
   end
 

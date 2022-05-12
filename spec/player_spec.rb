@@ -58,6 +58,10 @@ RSpec.describe Player do
     it "should start with 100 health points" do 
       expect(player).to have_attributes(max_health: 100)
     end
+
+    it "should start with 100 mana points" do 
+      expect(player).to have_attributes(max_mana: 100)
+    end
   
     it "should start with base damage as a range from 1 to 3" do
       expect(player).to have_attributes(base_damage: 1..5)
@@ -126,7 +130,7 @@ RSpec.describe Player do
       name: "Itemmm")
     }
 
-    context "sell an item" do
+    context "#sell_item" do
 
       it "takes an item as an argument" do
         expect(player).to receive(:sell_item).with(item)
@@ -151,7 +155,7 @@ RSpec.describe Player do
 
     end
 
-    context "buy an item" do
+    context "#buy_item" do
 
       it "takes an item as an argument" do
         expect(player).to receive(:buy_item).with(item)
@@ -169,26 +173,12 @@ RSpec.describe Player do
 
     end
 
-      it "drop an item" do
-        expect(player).to receive(:drop_item).with(item)
-        
-        player.drop_item(item)
-      end
-
-    context "respawn" do
-      
-      it "refills health" do
-        expect(player.health).to eq(player.max_health)
-      end
-
-      it "resets player's position" do
-        expect(player.pos_x).to eq(0)
-        expect(player.pos_y).to eq(0)
-      end
-
+    it "#drop_item" do
+      expect(player).to receive(:drop_item).with(item)
+      player.drop_item(item)
     end
 
-    it "accept a quest" do
+    it "#accept_quest" do
       player.accept_quest(quest)
       expect(player.quests).to include(quest)
     end
@@ -231,6 +221,18 @@ RSpec.describe Player do
         expect(subject.health).to eq(subject.max_health)
       end
   
+    end
+
+    context "#mana=" do
+      it "sets 'mana' to 0 if mana is less than 0" do
+        subject.mana=(-10)
+        expect(subject.mana).to eq(0)
+      end
+
+      it "limits health to max_health" do
+        subject.mana=(500)
+        expect(subject.mana).to eq(subject.max_mana)
+      end
     end
 
     context "#respawn" do

@@ -15,23 +15,28 @@ def fighter_stats
 end
 
 def player_turn
-  puts @player.image
-  puts "#{@player.name}'s turn"
+  ability_activated = false
+  until ability_activated
 
-  choices = @player.abilities.map { |ability| ability.name }.push("Run Away")
-  choice = @prompt.select("Choose an action:", choices )
-
-  if choice == "Run Away"
     system "cls"
-    puts "You have run away from the enemy!"
-    sleep 1
-    return "Run"
-  else
-    ability =  @player.abilities.find { |ability| ability.name == choice}
-    amount = ability.activate(enemy)
+    fighter_stats
+    puts @player.image
+    puts "#{@player.name}'s turn"
 
-    puts "#{@player.name} dealt #{amount} damage to #{enemy.name}"
-    sleep 1
+    choices = @player.abilities.map { |ability| ability.name }.push("Run Away")
+    choice = @prompt.select("Choose an action:", choices )
+
+    if choice == "Run Away"
+      system "cls"
+      puts "You have run away from the enemy!"
+      sleep 1
+      return "Run"
+    else
+      ability =  @player.abilities.find { |ability| ability.name == choice}
+      ability_activated = ability.activate
+      ability_activated ? puts(ability.message) : puts("Not enough Mana!")
+      sleep 1
+    end
   end
 end
 

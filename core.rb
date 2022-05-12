@@ -45,7 +45,8 @@ class Game
 
     # Abilities
     @abilities = [
-      Ability.new("Attack", "Basic attack", "-", "rand(@owner.damage)", "health")
+      Ability.new("Attack", "Basic attack", "other - rand(@owner.damage) health"),
+      Ability.new("Heal", "Heals for 30 HP", "self + 30 health", 30, "Player healed for 30 HP")
     ]
 
     # Map
@@ -63,7 +64,7 @@ class Game
     @igrac.inventory.add(@weapons[0])
     3.times { @igrac.inventory.add(@consumables[0]) }
     @igrac.equipped_weapon = @weapons[0]
-    @igrac.add_ability(@abilities[0])
+    @abilities.each { |ability| @igrac.add_ability(ability) }
 
     # Add stuff to the shop
     @vendor.set_items(@weapons[1], @weapons[2], @consumables[0], @consumables[1])
