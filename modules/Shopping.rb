@@ -25,10 +25,10 @@ def buy
     puts "-----#{shopp.name}-----"
     puts
 
-    choices = shopp.inventory.map { |item| item.name }.push("Go Back")
+    choices = shopp.inventory.map { |item| item.name }.push("Leave")
     choice = @prompt.select("Buy an item:", choices)
 
-    if choice == "Go Back"
+    if choice == "Leave"
       break
     else
       item = shopp.inventory.find { |item| item.name == choice}
@@ -61,5 +61,5 @@ def shop_goodbye
   system "cls"
   puts shopp.image
   puts shopp.goodbye
-  sleep 2
+  sleep 1
 end

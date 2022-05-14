@@ -21,7 +21,8 @@ RSpec.describe Player do
 
   let(:item) { instance_double(Item, "Wep or potion") }
 
-  let(:quest) { instance_double(Quest, "Test Quest") }
+  let(:quest) { instance_double(Quest, "Test Quest 1", accepted_by: nil) }
+  let(:quest2) { instance_double(Quest, "Test Quest 2", accepted_by: nil) }
 
   let(:inventory) { instance_double(Inventory, "Player's inventory",
     remove: nil, add: nil) }
@@ -87,8 +88,12 @@ RSpec.describe Player do
       expect(player).to have_attributes(dead: false)
     end
   
-    it "has quests as an empty array (of quests)" do
-      expect(player).to have_attributes(quests: [])
+    it "has unfinished quests as an empty array (of quests)" do
+      expect(player).to have_attributes(unfinished_quests: [])
+    end
+
+    it "has finished quests as an empty array (of quests)" do
+      expect(player).to have_attributes(finished_quests: [])
     end
   
     it "has an inventory" do
@@ -178,9 +183,27 @@ RSpec.describe Player do
       player.drop_item(item)
     end
 
-    it "#accept_quest" do
-      player.accept_quest(quest)
-      expect(player.quests).to include(quest)
+    context "#accept_quest" do
+      it "adds a quest to unfinished quests array" do
+        player.accept_quest(quest)
+        expect(player.unfinished_quests).to include(quest)
+      end
+    end
+    
+    context "#finish_quest" do
+      before do
+        player.unfinished_quests << quest
+      end
+
+      it "adds the quest to finished quests array" do
+        player.finish_quest(quest)
+        expect(player.finished_quests).to include(quest)
+      end
+
+      it "removes the quest from unfinished quests array" do
+        player.finish_quest(quest)
+        expect(player.unfinished_quests).not_to include(quest)
+      end
     end
 
     context "#equipped_weapon=" do
@@ -284,6 +307,15 @@ RSpec.describe Player do
       it "sets the ability's owner to player" do
         expect(ability).to receive(:owner=).with(player)
         player.add_ability(ability)
+      end
+    end
+
+    context "#quests" do
+      it "combines unfinished and finished quests" do
+        player.accept_quest(quest)
+        player.accept_quest(quest2)
+        player.finish_quest(quest)
+        expect(player.quests).to eq([quest2, quest])
       end
     end
   end

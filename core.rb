@@ -23,8 +23,6 @@ class Game
     @sef = Enemy.new("Boss", 10..20, 3, 200)
     @vendor = Shop.new(10)
     @questodavac = QuestGiver.new
-    @questodavac.quests << Quest.new("First quest!",
-      "Kill an enemy!", 100, 200, [])
 
     # Items
 
@@ -49,6 +47,18 @@ class Game
       Ability.new("Heal", "Heals for 30 HP", "self + 30 health", 30, "Player healed for 30 HP")
     ]
 
+    # Quests
+    @quests = [
+      Quest.new("Getting started", "Kill an enemy!",
+        ["Enemy.deaths > @starting[:enemy_deaths]"], 100, 100, []
+      ),
+      Quest.new("More = Better", "Level up!",
+        ["@owner.level > @starting[:level]"], 0, 200, [@weapons[1]]
+      ),
+      Quest.new("Getting even higher", "Reach level 5",
+      ["@owner.level > 5"], 0, 500, [])
+    ]
+
     # Map
     @mapa = Map.new("Mapa")
 
@@ -69,6 +79,9 @@ class Game
     # Add stuff to the shop
     @vendor.set_items(@weapons[1], @weapons[2], @consumables[0], @consumables[1])
 
+    # Add quests to the questgiver
+    @quests.each { |quest| @questodavac.quests << quest }
+
     @prompt = TTY::Prompt.new(quiet: true)
     @reader = TTY::Reader.new
   end
@@ -77,6 +90,9 @@ class Game
     State.init(@prompt, @reader, @igrac, @mapa)
     choice = "Menu"
     loop do
+      # Checks if any of player's quest are finished before anything
+      @igrac.unfinished_quests.each { |quest| State.finished_quest(quest) if quest.is_finished? }
+
       # Every State method should return a value with the same name as another State method
       choice = eval("State.#{choice.downcase}")
     end

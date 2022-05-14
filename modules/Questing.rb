@@ -8,7 +8,13 @@ def questgiver_welcome
     puts questgiver.image
     puts questgiver.greeting
     choice = @prompt.select("Choose an action:", ["Browse Quests", "Leave"])
-    choice == "Browse Quests" ? display_quests : questgiver_goodbye; break
+    case choice
+    when "Browse Quests"
+      display_quests
+    else
+      questgiver_goodbye
+      break
+    end
   end
 end
 
@@ -17,7 +23,8 @@ def display_quests
   puts "-----#{questgiver.name}-----"
   puts
 
-  choices = questgiver.quests.map { |quest| quest.name }.push("Go Back")
+  available_quests = questgiver.quests - @player.quests
+  choices = available_quests.map { |quest| quest.name }.push("Go Back")
   choice = @prompt.select("Choose a quest:", choices)
 
   unless choice == "Go Back"
@@ -28,6 +35,7 @@ end
 
 def questgiver_goodbye
   system "cls"
+  puts questgiver.image
   puts questgiver.goodbye
-  sleep 2
+  sleep 1
 end

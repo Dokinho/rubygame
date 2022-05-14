@@ -130,11 +130,36 @@ module State
   def self.quests
     system "cls"
     puts Text::QUESTS
-    @player.quests.each { |quest| puts quest.name }
+    puts "In progress:"
+      if @player.unfinished_quests.length > 0
+        @player.unfinished_quests.each { |quest| puts quest.name }
+      else
+        puts "You don't have any quests in progress."
+      end
+    puts
+    puts "Finished:"
+    if @player.finished_quests.length > 0
+      @player.finished_quests.each { |quest| puts quest.name }
+    else
+      puts "You don't have any finished quests."
+    end
     puts
     puts "Press any key to go back"
     @reader.read_keypress
     "Menu"
+  end
+
+  def self.finished_quest(quest)
+    system "cls"
+    puts "You have finished the quest '#{quest.name}'"
+    puts
+    puts "You have been rewarded with:"
+    puts "#{quest.xp_reward} XP"
+    puts "#{quest.gold_reward} Gold"
+    quest.item_reward.each { |item| puts item.name }
+    quest.finalize
+    puts "Press any key to continue"
+    @reader.read_keypress
   end
 
   def self.quit
@@ -142,5 +167,4 @@ module State
     puts Text::THANKS_FOR_PLAYING
     exit
   end
-
 end

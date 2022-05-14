@@ -2,10 +2,10 @@ require_relative "Inventory"
 require_relative "Ability"
 
 class Player
-  attr_reader :id, :level, :image, :equipped_weapon, :health, :mana, :gold
-  attr_accessor :name, :xp, :base_damage, :damage, :armor, :pos_x, :pos_y, :quests,
-    :dead, :inventory, :abilities, :interacting_with, :map_marker, :max_health,
-    :max_mana
+  attr_reader :id, :level, :image, :equipped_weapon, :health, :mana, :gold,
+    :unfinished_quests, :finished_quests
+  attr_accessor :name, :xp, :base_damage, :damage, :armor, :pos_x, :pos_y, :dead,
+    :inventory, :abilities, :interacting_with, :map_marker, :max_health, :max_mana
 
   def initialize
     @name = "Player"
@@ -21,7 +21,8 @@ class Player
     @pos_x = 0
     @pos_y = 0
     @dead = false
-    @quests = []
+    @unfinished_quests = []
+    @finished_quests = []
     @inventory = Inventory.new(10)
     @equipped_weapon = nil
     @abilities = []
@@ -53,7 +54,13 @@ class Player
   end
 
   def accept_quest(quest)
-    @quests.push(quest)
+    @unfinished_quests.push(quest)
+    quest.accepted_by(self)
+  end
+
+  def finish_quest(quest)
+    @finished_quests << quest
+    @unfinished_quests.delete(quest)
   end
 
   def equipped_weapon=(weapon)
@@ -104,4 +111,7 @@ class Player
     ability.owner = self
   end
 
+  def quests
+    unfinished_quests | finished_quests
+  end
 end
