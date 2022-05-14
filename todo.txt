@@ -1,4 +1,7 @@
--Add a main menu with New Game (with character creation), Load Game, About, and Quit
+-Main menu
+    -Make character creation
+    -Make load game
+    -Update about
 
 -Refactor all specs
 
@@ -26,8 +29,6 @@
 
 -Make player lose gold on death according to a certain formula
 
--Make accepting a quest return to main questgiver display, not to walking on the map
-
 -Make armor reduce incoming damage according to a formula
 
 -Make a better *finding* algorithm when player equips a weapon or uses a consumable
@@ -37,8 +38,6 @@
     -Bug: selling one health potion removes them all from inventory
 
 -Make the map always visible / menu accessible beneath the map?
-
--Add defaults to the end of every file?
 
 -Change "image" sizes!
 

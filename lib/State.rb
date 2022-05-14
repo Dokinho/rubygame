@@ -4,11 +4,24 @@ require_relative "../modules/Shopping"
 
 module State
 
-  def self.init(prompt, reader, player, map)
+  def self.init(prompt = TTY::Prompt.new, reader = TTY::Reader.new,
+    player = Player.new, map = Map.new
+  )
     @prompt = prompt
     @reader = reader
     @player = player
     @map = map
+  end
+
+  def self.start
+    system "cls"
+    puts Text::RUBY_RPG
+    @prompt.select("", cycle: true) do |menu|
+      menu.choice "New Game", "new_game"
+      menu.choice "Load Game", "load_game"
+      menu.choice "About", "about"
+      menu.choice "Quit", "quit"
+    end
   end
 
   def self.menu
@@ -85,7 +98,7 @@ module State
     system "cls"
     puts Text::PLAYER
     puts "|Name||Level||Health||Gold||Damage||Armor||Weapon|"
-    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}  #{@player.gold} #{@player.damage}       #{@player.armor}    #{@player.equipped_weapon.name}"
+    puts "#{@player.name}   #{@player.level}   #{@player.health}/#{@player.max_health}   #{@player.gold}    #{@player.damage}  #{@player.armor}    #{@player.equipped_weapon.name}"
     puts
     puts "Press any key to go back"
     @reader.read_keypress
@@ -110,7 +123,9 @@ module State
     choices = consumables.map { |item| "#{item.name}   #{item.description}" }.push("Go Back")
     choice = @prompt.select("Use an item:", choices)
     unless choice == "Go Back"
-      @player.inventory.find { |item| choice.include?(item.name) }.affect(@player)
+      item = @player.inventory.find { |item| choice.include?(item.name) }
+      item.affect(@player)
+      @player.drop_item(item)
     end
     "Inventory"
   end
@@ -162,9 +177,17 @@ module State
     @reader.read_keypress
   end
 
+  def self.about
+    puts "This is a Ruby RPG game"
+    puts "Press any key to go back"
+    @reader.read_keypress
+  end
+
   def self.quit
     system "cls"
     puts Text::THANKS_FOR_PLAYING
+    sleep 1
+    system "cls"
     exit
   end
 end

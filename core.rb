@@ -14,11 +14,10 @@ require_relative "image_art/Image"
 require_relative "image_art/Text"
 
 class Game
-
-  def self.setup
+  def self.new_game
     # Player and NPCs
+    # State.create_character for player?
     @igrac = Player.new
-
     @zloco = Enemy.new("Lopov", 5..10, 1, 50)
     @sef = Enemy.new("Boss", 10..20, 3, 200)
     @vendor = Shop.new(10)
@@ -81,16 +80,34 @@ class Game
 
     # Add quests to the questgiver
     @quests.each { |quest| @questodavac.quests << quest }
-
-    @prompt = TTY::Prompt.new(quiet: true)
-    @reader = TTY::Reader.new
   end
 
   def self.start
+    @prompt = TTY::Prompt.new(quiet: true)
+    @reader = TTY::Reader.new
+
+    State.init(@prompt, @reader)
+    #Start of the game loop (main menu)
+    loop do
+      choice = State.start
+      case choice
+      when "new_game"
+        self.new_game
+        break
+      when "load_game"
+        self.new_game
+        break
+      when "about" then State.about
+      when "quit" then State.quit
+      end
+    end
+
+    # Main game loop - when New Game or Load Game is selected
     State.init(@prompt, @reader, @igrac, @mapa)
     choice = "Menu"
     loop do
-      # Checks if any of player's quest are finished before anything
+      # Checks if any of player's quests are finished before anything so it can display
+      # a "pop-up" message
       @igrac.unfinished_quests.each { |quest| State.finished_quest(quest) if quest.is_finished? }
 
       # Every State method should return a value with the same name as another State method
@@ -100,5 +117,4 @@ class Game
 
 end
 
-Game.setup
 Game.start
