@@ -24,11 +24,36 @@ module State
     end
   end
 
+  def self.create_character
+    system "cls"
+    puts Text::RUBY_RPG
+    puts "Create a character"
+    @prompt.ask("Enter the name of your character:\n", default: "Player") do |q|
+      q.modify :trim, :capitalize
+    end
+  end
+
+  def self.save_game
+    system "cls"
+    filename = @prompt.ask("Save as:", default: @player.name) do |q|
+      q.modify :trim
+    end
+    Game.save_game(filename)
+    "Menu"
+  end
+
   def self.menu
     system "cls"
     puts Text::MAIN_MENU
-    selection = %w(Map Character Inventory Quests Quit)
-    @prompt.select("Choose an action:", selection, cycle: true)
+    @prompt.select("Choose an action:\n", cycle: true, per_page: 10) do |menu|
+      menu.choice "Map"
+      menu.choice "Character"
+      menu.choice "Inventory"
+      menu.choice "Quests"
+      menu.choice "Save game", "save_game"
+      menu.choice "Load Game", "load_game"
+      menu.choice "Quit"
+    end
   end
 
   def self.map

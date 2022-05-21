@@ -1,7 +1,10 @@
 require_relative "Inventory"
 require_relative "Ability"
+require_relative "Saveable"
 
 class Player
+  include Saveable
+
   attr_reader :id, :level, :image, :equipped_weapon, :health, :mana, :gold,
     :unfinished_quests, :finished_quests
   attr_accessor :name, :xp, :base_damage, :damage, :armor, :pos_x, :pos_y, :dead,

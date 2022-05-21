@@ -1,3 +1,6 @@
+require "time"
+require "json"
+
 # To make bundler work
 require "rubygems"
 require "bundler/Setup"
@@ -14,15 +17,8 @@ require_relative "image_art/Image"
 require_relative "image_art/Text"
 
 class Game
-  def self.new_game
-    # Player and NPCs
-    # State.create_character for player?
-    @igrac = Player.new
-    @zloco = Enemy.new("Lopov", 5..10, 1, 50)
-    @sef = Enemy.new("Boss", 10..20, 3, 200)
-    @vendor = Shop.new(10)
-    @questodavac = QuestGiver.new
-
+  # Load defaults
+  def self.setup
     # Items
 
     # Weapons
@@ -60,6 +56,20 @@ class Game
 
     # Map
     @mapa = Map.new("Mapa")
+  end
+
+  def self.new_game
+    self.setup
+
+    # Player and NPCs
+    @igrac = Player.new
+    @igrac.name = State.create_character
+
+    @zloco = Enemy.new("Lopov", 5..10, 1, 50)
+    @sef = Enemy.new("Boss", 10..20, 3, 200)
+    @vendor = Shop.new(10)
+    @questodavac = QuestGiver.new
+    @npcs = [@zloco, @sef, @vendor, @questodavac]
 
     # Add objects to map
     # Player is added last so it will be rendered when it's on top of something else
@@ -80,6 +90,33 @@ class Game
 
     # Add quests to the questgiver
     @quests.each { |quest| @questodavac.quests << quest }
+  end
+
+  def self.save_game(filename)
+    File.open("./save/#{filename}.json", "w") do |file|
+      player_hash = @igrac.to_hash_with_id
+      npc_hashes = @npcs.map { |npc| npc.to_hash_with_id }
+      wep_hashes = @weapons.map { |wep| wep.to_hash_with_id}
+      cons_hashes = @consumables.map { |cons| cons.to_hash_with_id}
+      ability_hashes = @abilities.map { |ability| ability.to_hash_with_id}
+      quest_hashes = @quests.map { |quest| quest.to_hash_with_id}
+      map_hash = @mapa.to_hash_with_id
+
+      data = {
+        player: player_hash,
+        npcs: npc_hashes,
+        weapons: wep_hashes,
+        consumables: cons_hashes,
+        abilities: ability_hashes,
+        quests: quest_hashes,
+        map: map_hash
+      }
+      JSON.dump(data, file)
+    end
+  end
+
+  def self.load_game(filename)
+    puts "Loading"
   end
 
   def self.start
@@ -118,3 +155,4 @@ class Game
 end
 
 Game.start
+# Game.load_game("Player")

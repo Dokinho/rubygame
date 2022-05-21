@@ -1,4 +1,8 @@
+require_relative "Saveable"
+
 class Map
+  include Saveable
+
   attr_reader :id, :name, :width, :height, :out
   attr_accessor :objects
 

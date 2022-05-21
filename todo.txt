@@ -1,5 +1,5 @@
 -Main menu
-    -Make character creation
+    -Make save game
     -Make load game
     -Update about
 

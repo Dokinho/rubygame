@@ -1,4 +1,8 @@
+require_relative "Saveable"
+
 class Npc
+    include Saveable
+
     attr_accessor :pos_x, :pos_y, :map_marker, :image
     attr_reader :id, :name
 

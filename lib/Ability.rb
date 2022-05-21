@@ -1,4 +1,8 @@
+require_relative "Saveable"
+
 class Ability
+  include Saveable
+
   attr_reader :name, :description, :target, :sign, :attribute, :mana_cost, :message
   attr_accessor :amount, :owner
 

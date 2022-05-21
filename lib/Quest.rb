@@ -1,6 +1,9 @@
 require_relative "Enemy"
+require_relative "Saveable"
 
 class Quest
+  include Saveable
+
   attr_reader :name, :description, :conditions, :xp_reward, :gold_reward,
     :item_reward, :owner, :starting
 
