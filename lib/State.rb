@@ -42,6 +42,13 @@ module State
     "Menu"
   end
 
+  def self.load_game
+    system "cls"
+    choices = Dir.children("./save").map { |save_file| save_file[0..-6] }.push("Go Back")
+
+    @prompt.select("Load a game:", choices, cycle: true, per_page: 10)
+  end
+
   def self.menu
     system "cls"
     puts Text::MAIN_MENU

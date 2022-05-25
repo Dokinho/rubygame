@@ -43,7 +43,10 @@ RSpec.describe Player do
   end
 
   context "instantiated" do
-  
+    it "has an id" do
+      expect(player).to have_attributes(id: player.object_id)
+    end
+
     it "has a default name of 'Player'" do
       expect(player).to have_attributes(name: "Player")
     end
@@ -59,7 +62,6 @@ RSpec.describe Player do
     it "should start with 100 health points" do 
       expect(player).to have_attributes(max_health: 100)
     end
-
     it "should start with 100 mana points" do 
       expect(player).to have_attributes(max_mana: 100)
     end

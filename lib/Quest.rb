@@ -3,13 +3,15 @@ require_relative "Saveable"
 
 class Quest
   include Saveable
+  extend Saveable
 
-  attr_reader :name, :description, :conditions, :xp_reward, :gold_reward,
+  attr_reader :id, :name, :description, :conditions, :xp_reward, :gold_reward,
     :item_reward, :owner, :starting
 
   def initialize(name, description, conditions, xp_reward = 0, gold_reward = 0,
     item_reward = []
   )
+    @id = self.object_id 
     @name = name.to_sym
     @description = description
     @conditions = conditions

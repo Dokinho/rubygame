@@ -30,6 +30,7 @@ RSpec.describe Quest do
     end
 
     it "has other attributes defaulted" do
+      expect(quest_min_params).to have_attributes(id: quest_min_params.object_id)
       expect(quest_min_params).to have_attributes(xp_reward: 0)
       expect(quest_min_params).to have_attributes(gold_reward: 0)
       expect(quest_min_params).to have_attributes(item_reward: [])

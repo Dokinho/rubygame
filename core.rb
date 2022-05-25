@@ -16,6 +16,34 @@ Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
 require_relative "image_art/Image"
 require_relative "image_art/Text"
 
+# Makes loading work - converts the saved hash to an object
+def instantiate(hash)
+  klass = Object.const_get(hash["klass"])
+
+  instance =
+  if hash["req_params"] > 0
+    params = argize(hash["req_params"])
+    eval "klass.new(#{params})"
+  else
+    klass.new
+  end
+
+  hash.delete "klass"
+  hash.delete "req_params"
+
+  hash.each do |k, v|
+    k.include?("damage") ? instance.instance_variable_set(k, eval(v)) : instance.instance_variable_set(k, v)
+  end
+  instance
+end
+
+# Helper function for instantiates
+def argize(num)
+  final = ""
+  (num - 1).times { final << "\"arg\", " }
+  final << "\"arg\""
+end
+
 class Game
   # Load defaults
   def self.setup
@@ -94,13 +122,15 @@ class Game
 
   def self.save_game(filename)
     File.open("./save/#{filename}.json", "w") do |file|
-      player_hash = @igrac.to_hash_with_id
-      npc_hashes = @npcs.map { |npc| npc.to_hash_with_id }
-      wep_hashes = @weapons.map { |wep| wep.to_hash_with_id}
-      cons_hashes = @consumables.map { |cons| cons.to_hash_with_id}
-      ability_hashes = @abilities.map { |ability| ability.to_hash_with_id}
-      quest_hashes = @quests.map { |quest| quest.to_hash_with_id}
-      map_hash = @mapa.to_hash_with_id
+      player_hash = @igrac.to_hash
+      npc_hashes = @npcs.map { |npc| npc.to_hash }
+      wep_hashes = @weapons.map { |wep| wep.to_hash}
+      cons_hashes = @consumables.map { |cons| cons.to_hash}
+      ability_hashes = @abilities.map { |ability| ability.to_hash}
+      quest_hashes = @quests.map { |quest| quest.to_hash}
+      map_hash = @mapa.to_hash
+      inventories = [@igrac.inventory.to_hash]
+      @npcs.each { |npc| inventories << npc.inventory.to_hash if defined?(npc.inventory)}
 
       data = {
         player: player_hash,
@@ -109,14 +139,103 @@ class Game
         consumables: cons_hashes,
         abilities: ability_hashes,
         quests: quest_hashes,
-        map: map_hash
+        map: map_hash,
+        inventories: inventories
       }
       JSON.dump(data, file)
     end
   end
 
+  # Helper function for loading
+  # All game objects that are tied to other game objects must be supplied all at once
+  def self.associate_refs(*args)
+    associations = {}
+    
+    args.each do |elem|
+      if elem.is_a?(Array)
+        elem.each do |obj|
+          associations[obj.id] = obj.object_id
+        end
+      else
+        associations[elem.id] = elem.object_id
+      end
+    end
+    associations
+  end
+
+  def self.sub_refs(associations, *args)
+    sub_regex = /REF/
+
+    args.each do |elem|
+      if elem.is_a?(Array)
+        elem.each do |instance|
+          instance.instance_variables.each do |var|
+            value = instance.instance_variable_get(var)
+            # If a reference is found, substitute the string with object reference
+            value_str = value.to_s
+            if value_str.match(sub_regex)
+              pure_ids = eval(value_str.gsub(sub_regex, ""))
+              if pure_ids.is_a?(Integer)
+                old_id = pure_ids
+                instance.instance_variable_set(var, ObjectSpace._id2ref(associations[old_id]))
+              elsif pure_ids.is_a?(Array)
+                final_array = []
+                 pure_ids.each do |id|
+                  old_id = eval(id)
+                  final_array << ObjectSpace._id2ref(associations[old_id])
+                  end
+                  elem.instance_variable_set(var, final_array)
+                end
+            end
+          end
+        end
+      else
+        elem.instance_variables.each do |var|
+          value = elem.instance_variable_get(var)
+         # If a reference is found, substitute the string with object reference
+         value_str = value.to_s
+         if value_str.match(sub_regex)
+           pure_ids = eval(value_str.gsub(sub_regex, ""))
+           if pure_ids.is_a?(Integer)
+             old_id = pure_ids
+             elem.instance_variable_set(var, ObjectSpace._id2ref(associations[old_id]))
+           elsif pure_ids.is_a?(Array)
+            final_array = []
+             pure_ids.each do |id|
+              old_id = eval(id)
+              final_array << ObjectSpace._id2ref(associations[old_id])
+              end
+              elem.instance_variable_set(var, final_array)
+            end
+          end
+        end
+      end
+    end
+  end
+
   def self.load_game(filename)
-    puts "Loading"
+    start = Time.now
+
+    File.open("./save/#{filename}.json") do |file|
+      data = JSON.load(file)
+
+      @igrac = instantiate(data["player"])
+      @npcs = data["npcs"].map { |npc| instantiate(npc) }
+      @weapons = data["weapons"].map { |weapon| instantiate(weapon) }
+      @consumables = data["consumables"].map { |consumable| instantiate(consumable) }
+      @abilities = data["abilities"].map { |ability| instantiate(ability) }
+      @quests = data["quests"].map { |quest| instantiate(quest) }
+      @mapa = instantiate(data["map"])
+      @inventories = data["inventories"].map { |inventory| instantiate(inventory) }
+
+      associations = Game.associate_refs(@igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
+      Game.sub_refs(associations, @igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
+
+      finish = (Time.now - start)
+      puts "Finished loading in #{finish} seconds!"
+      p @igrac.inventory
+      sleep 5
+    end
   end
 
   def self.start
@@ -132,8 +251,11 @@ class Game
         self.new_game
         break
       when "load_game"
-        self.new_game
-        break
+        game = State.load_game
+        unless game == "Go Back"
+          Game.load_game(game)
+          break
+        end
       when "about" then State.about
       when "quit" then State.quit
       end

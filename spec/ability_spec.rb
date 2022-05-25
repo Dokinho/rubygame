@@ -17,6 +17,7 @@ RSpec.describe Ability do
     :health= => "ok", mana: 0, name: "Manaless") }
 
   context "attributes" do
+    it { is_expected.to have_attributes(id: subject.object_id) }
     it { is_expected.to have_attributes(name: :Attack) }
     it { is_expected.to have_attributes(description: "Basic attack") }
     it { is_expected.to have_attributes(target: "other") }

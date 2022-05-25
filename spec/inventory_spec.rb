@@ -14,6 +14,7 @@ RSpec.describe Inventory do
     inventar.items = [item1, item2]
   end
 
+  it { is_expected.to have_attributes(id: subject.object_id) }
   it { is_expected.to have_attributes(items: []) }
   it { is_expected.to have_attributes(max_slots: 20) }
 

@@ -1,6 +1,5 @@
 -Main menu
-    -Make save game
-    -Make load game
+    -Fix save and load game
     -Update about
 
 -Refactor all specs
@@ -60,3 +59,12 @@
 -Add instance counter to every class?
 
 -(Change the location (in code) and frequency of checking if any quest is finished)?
+
+-Only select necessary class vars when saving a game
+
+-Add ids to objects and change saving/loading:
+    -Implement association by id on load, so defaults don't have to be saved in a save file
+
+-Optimize Saveable #to_hash
+
+-Optimize saving (use JSON custom load?)

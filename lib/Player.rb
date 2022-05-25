@@ -4,6 +4,7 @@ require_relative "Saveable"
 
 class Player
   include Saveable
+  extend Saveable
 
   attr_reader :id, :level, :image, :equipped_weapon, :health, :mana, :gold,
     :unfinished_quests, :finished_quests
@@ -11,6 +12,7 @@ class Player
     :inventory, :abilities, :interacting_with, :map_marker, :max_health, :max_mana
 
   def initialize
+    @id = self.object_id
     @name = "Player"
     @level = 1
     @xp = 0

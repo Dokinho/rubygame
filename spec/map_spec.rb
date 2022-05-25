@@ -8,6 +8,9 @@ RSpec.describe Map do
   let(:npc) { instance_double(Npc, "A guy", :pos_x= => "ok", :pos_y= => "ok") }
 
   context "without arguments" do
+    it "has an id" do
+      expect(map_no_args).to have_attributes(id: map_no_args.object_id)
+    end
 
     it "has a default name" do
       expect(map_no_args).to have_attributes(name: "Default Map")
@@ -29,6 +32,9 @@ RSpec.describe Map do
   end
 
   context "with arguments" do
+    it "has an id" do
+      expect(map).to have_attributes(id: map.object_id)
+    end
 
     it "has a specified name" do
         expect(map).to have_attributes(name: "Mapa")

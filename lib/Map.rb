@@ -2,6 +2,7 @@ require_relative "Saveable"
 
 class Map
   include Saveable
+  extend Saveable
 
   attr_reader :id, :name, :width, :height, :out
   attr_accessor :objects
@@ -9,6 +10,7 @@ class Map
   class OutOfBoundsError < StandardError; end
 
   def initialize(name = "Default Map", width = 25, height = 25)
+    @id = self.object_id
     @name = name
     @width = width
     @height = height

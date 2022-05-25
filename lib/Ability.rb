@@ -2,8 +2,9 @@ require_relative "Saveable"
 
 class Ability
   include Saveable
+  extend Saveable
 
-  attr_reader :name, :description, :target, :sign, :attribute, :mana_cost, :message
+  attr_reader :id, :name, :description, :target, :sign, :attribute, :mana_cost, :message
   attr_accessor :amount, :owner
 
   # Ability effects should be written a certain way:
@@ -19,6 +20,7 @@ class Ability
   #   by owner's damage
   
   def initialize(name, description, effect, mana_cost = 0, message = "")
+    @id = self.object_id
     @name = name.to_sym
     @description = description
     @target, @sign, @amount, @attribute = effect.split
