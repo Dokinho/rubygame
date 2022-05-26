@@ -32,12 +32,13 @@ def instantiate(hash)
   hash.delete "req_params"
 
   hash.each do |k, v|
+    # Makes sure damage attribute is a range and not a string
     k.include?("damage") ? instance.instance_variable_set(k, eval(v)) : instance.instance_variable_set(k, v)
   end
   instance
 end
 
-# Helper function for instantiates
+# Helper function for instantiate
 def argize(num)
   final = ""
   (num - 1).times { final << "\"arg\", " }
@@ -150,7 +151,6 @@ class Game
   # All game objects that are tied to other game objects must be supplied all at once
   def self.associate_refs(*args)
     associations = {}
-    
     args.each do |elem|
       if elem.is_a?(Array)
         elem.each do |obj|
@@ -184,7 +184,7 @@ class Game
                   old_id = eval(id)
                   final_array << ObjectSpace._id2ref(associations[old_id])
                   end
-                  elem.instance_variable_set(var, final_array)
+                  instance.instance_variable_set(var, final_array)
                 end
             end
           end
@@ -192,18 +192,18 @@ class Game
       else
         elem.instance_variables.each do |var|
           value = elem.instance_variable_get(var)
-         # If a reference is found, substitute the string with object reference
-         value_str = value.to_s
-         if value_str.match(sub_regex)
-           pure_ids = eval(value_str.gsub(sub_regex, ""))
-           if pure_ids.is_a?(Integer)
-             old_id = pure_ids
-             elem.instance_variable_set(var, ObjectSpace._id2ref(associations[old_id]))
-           elsif pure_ids.is_a?(Array)
-            final_array = []
-             pure_ids.each do |id|
-              old_id = eval(id)
-              final_array << ObjectSpace._id2ref(associations[old_id])
+          # If a reference is found, substitute the string with object reference
+          value_str = value.to_s
+          if value_str.match(sub_regex)
+            pure_ids = eval(value_str.gsub(sub_regex, ""))
+            if pure_ids.is_a?(Integer)
+              old_id = pure_ids
+              elem.instance_variable_set(var, ObjectSpace._id2ref(associations[old_id]))
+            elsif pure_ids.is_a?(Array)
+              final_array = []
+              pure_ids.each do |id|
+                old_id = eval(id)
+                final_array << ObjectSpace._id2ref(associations[old_id])
               end
               elem.instance_variable_set(var, final_array)
             end
@@ -214,7 +214,7 @@ class Game
   end
 
   def self.load_game(filename)
-    start = Time.now
+    # start = Time.now
 
     File.open("./save/#{filename}.json") do |file|
       data = JSON.load(file)
@@ -231,10 +231,8 @@ class Game
       associations = Game.associate_refs(@igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
       Game.sub_refs(associations, @igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
 
-      finish = (Time.now - start)
-      puts "Finished loading in #{finish} seconds!"
-      p @igrac.inventory
-      sleep 5
+      # finish = (Time.now - start)
+      # puts "Finished loading in #{finish} seconds!"
     end
   end
 

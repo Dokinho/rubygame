@@ -58,7 +58,7 @@ module State
       menu.choice "Inventory"
       menu.choice "Quests"
       menu.choice "Save game", "save_game"
-      menu.choice "Load Game", "load_game"
+      # menu.choice "Load Game", "load_game"
       menu.choice "Quit"
     end
   end
