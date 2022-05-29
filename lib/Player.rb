@@ -20,8 +20,8 @@ class Player
     @max_health = 100
     @mana = 100
     @max_mana = 100
-    @base_damage = 1..5
-    @damage = 1..5
+    @base_damage = 1...5
+    @damage = 1...5
     @armor = 1
     @pos_x = 0
     @pos_y = 0

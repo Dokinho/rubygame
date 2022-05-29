@@ -1,5 +1,6 @@
+-Save class variables (when saving a game) and then load them again (when loading a game)
+
 -Main menu
-    -Fix save and load game
     -Update about
 
 -Refactor all specs
@@ -26,7 +27,7 @@
 
 -Swap x and y coordinates (they're not correct)
 
--Make player lose gold on death according to a certain formula
+-Make player lose gold (and items?) on death according to a certain formula
 
 -Make armor reduce incoming damage according to a formula
 
@@ -62,9 +63,8 @@
 
 -Only select necessary class vars when saving a game
 
--Add ids to objects and change saving/loading:
-    -Implement association by id on load, so defaults don't have to be saved in a save file
-
 -Optimize Saveable #to_hash
 
 -Optimize saving (use JSON custom load?)
+
+-Multiplying ranges always includes the last number in the range

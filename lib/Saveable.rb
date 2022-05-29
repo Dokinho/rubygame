@@ -6,7 +6,7 @@ module Saveable
   #   }.to_json(*args)
   # end
 
-  # def class_regex
+  # def self_class_regex
   #   /#<#{self.class}:0x\w*>/
   # end
 
@@ -23,7 +23,7 @@ module Saveable
     req_params = (arity < 0) ? (arity + 1).abs : arity
 
     hash = {klass: self.class, req_params: req_params}
-    self.instance_variables.each() do |var|
+    self.instance_variables.each do |var|
       value = self.instance_variable_get(var)
       if value.is_a?(Array)
         if value.any? { |elem| elem.to_s.match(class_regex) }
@@ -38,6 +38,15 @@ module Saveable
           hash[var] = value
         end
       end
+    end
+    hash
+  end
+
+  def class_vars_to_hash
+    hash = {}
+    self.class_variables.each do |var|
+      value = self.class_variable_get(var)
+      hash[var] = value
     end
     hash
   end

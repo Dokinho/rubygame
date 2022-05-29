@@ -16,6 +16,13 @@ Dir[File.join(__dir__, 'lib', '*.rb')].each { |file| require file }
 require_relative "image_art/Image"
 require_relative "image_art/Text"
 
+# For multiplying ranges (damage)
+class Range
+  def *(amount)
+    Range.new(self.min * amount, self.max * amount, self.exclude_end?)
+  end
+end
+
 # Makes loading work - converts the saved hash to an object
 def instantiate(hash)
   klass = Object.const_get(hash["klass"])
@@ -52,9 +59,9 @@ class Game
 
     # Weapons
     @weapons = [
-      Weapon.new("Sword", "Basic sword", 100, false, 1, "Common", 10..15, 1),
-      Weapon.new("Dagger", "Basic dagger", 150, false, 1, "Common", 12..16, 1),
-      Weapon.new("Mace", "Basic mace", 250, false, 1, "Common", 13..20, 1)
+      Weapon.new("Sword", "Basic sword", 100, false, 1, "Common", 10...15, 1),
+      Weapon.new("Dagger", "Basic dagger", 150, false, 1, "Common", 12...16, 1),
+      Weapon.new("Mace", "Basic mace", 250, false, 1, "Common", 13...20, 1)
     ]
 
     # Consumables
@@ -94,8 +101,8 @@ class Game
     @igrac = Player.new
     @igrac.name = State.create_character
 
-    @zloco = Enemy.new("Lopov", 5..10, 1, 50)
-    @sef = Enemy.new("Boss", 10..20, 3, 200)
+    @zloco = Enemy.new("Lopov", 5...10, 1, 50)
+    @sef = Enemy.new("Boss", 10...20, 3, 200)
     @vendor = Shop.new(10)
     @questodavac = QuestGiver.new
     @npcs = [@zloco, @sef, @vendor, @questodavac]
@@ -133,6 +140,8 @@ class Game
       inventories = [@igrac.inventory.to_hash]
       @npcs.each { |npc| inventories << npc.inventory.to_hash if defined?(npc.inventory)}
 
+      enemy_vars = Enemy.class_vars_to_hash
+
       data = {
         player: player_hash,
         npcs: npc_hashes,
@@ -141,7 +150,8 @@ class Game
         abilities: ability_hashes,
         quests: quest_hashes,
         map: map_hash,
-        inventories: inventories
+        inventories: inventories,
+        enemy_vars: enemy_vars
       }
       JSON.dump(data, file)
     end
@@ -213,6 +223,12 @@ class Game
     end
   end
 
+  def self.fix_class_vars(klass, saved_vars)
+    saved_vars.each do |k, v|
+      klass.class_variable_set(k, v)
+    end
+  end
+
   def self.load_game(filename)
     # start = Time.now
 
@@ -227,6 +243,11 @@ class Game
       @quests = data["quests"].map { |quest| instantiate(quest) }
       @mapa = instantiate(data["map"])
       @inventories = data["inventories"].map { |inventory| instantiate(inventory) }
+
+      Game.fix_class_vars(Enemy, data["enemy_vars"])
+      kl_vars = Enemy.class_variables.map { |var| Enemy.class_variable_get(var) }
+      puts "Class Vars are now: #{kl_vars}"
+      sleep 3
 
       associations = Game.associate_refs(@igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
       Game.sub_refs(associations, @igrac, @npcs, @weapons, @consumables, @abilities, @quests, @mapa, @inventories)
@@ -275,4 +296,5 @@ class Game
 end
 
 Game.start
+# Game.fix_class_vars(Enemy)
 # Game.load_game("Player")
